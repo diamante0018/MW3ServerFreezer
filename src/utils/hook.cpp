@@ -1,3 +1,5 @@
+#include <stdinc.hpp>
+
 #include "hook.hpp"
 #include "string.hpp"
 

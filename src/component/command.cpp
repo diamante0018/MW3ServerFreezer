@@ -98,11 +98,11 @@ namespace command
 
 		if (sync)
 		{
-			game::Cmd_ExecuteSingleCommand(0, 0, command.data());
+			game::Cmd_ExecuteSingleCommand(game::LocalClientNum_t::LOCAL_CLIENT_0, 0, command.data());
 		}
 		else
 		{
-			game::Cbuf_AddText(0, command.data());
+			game::Cbuf_AddText(game::LocalClientNum_t::LOCAL_CLIENT_0, command.data());
 		}
 	}
 

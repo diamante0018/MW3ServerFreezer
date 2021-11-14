@@ -1,3 +1,5 @@
+#include <stdinc.hpp>
+
 #include "nt.hpp"
 
 namespace utils::nt

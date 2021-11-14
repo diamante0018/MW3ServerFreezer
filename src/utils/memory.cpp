@@ -1,3 +1,5 @@
+#include <stdinc.hpp>
+
 #include "memory.hpp"
 #include "nt.hpp"
 

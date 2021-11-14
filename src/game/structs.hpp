@@ -26,6 +26,16 @@ namespace game
 		const char** argv[8];
 	};
 
+	enum class LocalClientNum_t
+	{
+		LOCAL_CLIENT_0 = 0,
+		LOCAL_CLIENT_1 = 1,
+		LOCAL_CLIENT_2 = 2,
+		LOCAL_CLIENT_3 = 3,
+		LOCAL_CLIENT_LAST = 3,
+		LOCAL_CLIENT_COUNT = 4
+	};
+
 	typedef enum
 	{
 		NS_CLIENT1 = 0,
@@ -367,6 +377,46 @@ namespace game
 		char remoteControlAngles[2];
 		int remoteControlMove;
 	};
+
+	enum LocSelInputState
+	{
+		LOC_SEL_INPUT_NONE = 0,
+		LOC_SEL_INPUT_CONFIRM = 1,
+		LOC_SEL_INPUT_CANCEL = 2
+	};
+
+	struct field_t
+	{
+		int cursor;
+		int scroll;
+		int drawWidth;
+		int widthInPixels;
+		float charHeight;
+		int fixedSize;
+		char buffer[256];
+	};
+
+	struct KeyState
+	{
+		int down;
+		int repeats;
+		int binding;
+		const char* bindingCheat;
+	};
+
+	static_assert(sizeof(field_t) == 280);
+
+	struct PlayerKeyState
+	{
+		field_t chatField;
+		int chat_team;
+		int overstrikeMode;
+		int anyKeyDown;
+		KeyState keys[256];
+		LocSelInputState locSelInputState;
+	};
+
+	static_assert(sizeof(PlayerKeyState) == 4392);
 
 	enum EffectiveStance
 	{

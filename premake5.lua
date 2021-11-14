@@ -74,7 +74,7 @@ project "mw3-server-freezer"
     pchheader "stdinc.hpp"
     pchsource "src/stdinc.cpp"
 
-    files { "/src/**.hpp", "/src/**.cpp" }
+    files { "./src/**.hpp", "./src/**.cpp" }
 
     includedirs { "src" }
 

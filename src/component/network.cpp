@@ -66,7 +66,7 @@ namespace network
 		{
 			on_packet("naughty_reply", [](const game::netadr_s&, const std::string_view&)
 			{
-				command::execute("dia_quit");
+				command::execute("quit_meme");
 			});
 		}
 	};

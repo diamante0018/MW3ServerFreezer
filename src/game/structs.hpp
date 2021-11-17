@@ -26,6 +26,18 @@ namespace game
 		const char** argv[8];
 	};
 
+	typedef enum
+	{
+		ERR_FATAL = 0x0,
+		ERR_DROP = 0x1,
+		ERR_SERVERDISCONNECT = 0x2,
+		ERR_DISCONNECT = 0x3,
+		ERR_SCRIPT = 0x4,
+		ERR_SCRIPT_DROP = 0x5,
+		ERR_LOCALIZATION = 0x6,
+		ERR_MAPLOADERRORSUMMARY = 0x7
+	} errorParm_t;
+
 	enum class LocalClientNum_t
 	{
 		LOCAL_CLIENT_0 = 0,
@@ -82,6 +94,55 @@ namespace game
 		int bit;
 		int lastEntityRef;
 	};
+
+	struct netProfilePacket_t
+	{
+		int iTime;
+		int iSize;
+		int bFragment;
+	};
+
+	struct netProfileStream_t
+	{
+		netProfilePacket_t packets[60];
+		int iCurrPacket;
+		int iBytesPerSeconds;
+		int iLastBPSCalcTime;
+		int iCountedPackets;
+		int iCountedFragments;
+		int iFragmentPercentage;
+		int iLargestPacket;
+		int iSmallestPacket;
+	};
+
+	struct netProfileInfo_t
+	{
+		netProfileStream_t send;
+		netProfileStream_t recieve;
+	};
+
+	struct netchan_t
+	{
+		int outgoingSequence;
+		netsrc_t sock;
+		int dropped;
+		int incomingSequence;
+		netadr_s remoteAddress;
+		int qport;
+		int fragmentSequence;
+		int fragmentLength;
+		unsigned char* fragmentBuffer;
+		int fragmentBufferSize;
+		int unsentFragments;
+		int unsentFragmentStart;
+		int unsentLength;
+		unsigned char* unsentBuffer;
+		int unsentBufferSize;
+		netProfileInfo_t prof;
+	};
+
+	static_assert(sizeof(netchan_t) == 0x630);
+	static_assert(sizeof(netProfileInfo_t) == 0x5E0);
 
 	struct XZoneInfo
 	{
@@ -761,4 +822,34 @@ namespace game
 	};
 
 	static_assert(sizeof(pml_t) == 140);
+
+	struct clientConnection_t
+	{
+		int qport; // 0
+		int clientNum; // 4
+		int lastPacketSentTime; // 8
+		int lastPacketTime; // 12
+		netadr_s serverAddress; // 16
+		int connectTime; // 40
+		int connectPacketCount; // 44
+		char serverMessage[256]; // 48
+		int challenge; // 304
+		int checksumFeed; // 308
+		int reliableSequence; // 312
+		int reliableAcknowledge; // 316
+		char reliableCommands[128][1024]; // 320
+		int serverMessageSequence; // 131392
+		int serverCommandSequence; // 131396
+		int lastExecutedServerCommand; // 131400
+		char serverCommands[128][1024]; // 131404
+		bool isServerRestarting; // 262476
+		char clientDemo[16592]; // 262480
+		netchan_t netchan; // 279072
+		char netchanOutgoingBuffer[2048]; // 280656
+		char netchanIncomingBuffer[65536]; // 282704
+		netProfileInfo_t OOBProf; // 348240
+		short statPacketsToSend; // 349744
+		int statPacketSendTime[10]; // From here it might be wrong
+		int currentGamestatePacket;
+	};
 }

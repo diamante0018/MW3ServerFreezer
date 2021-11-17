@@ -7,14 +7,14 @@
 
 namespace cheats
 {
-	game::dvar_t* cl_wallhack;
+	game::dvar_t* cl_EnableCheats;
 
 	__declspec(naked) void draw_red_box_stub()
 	{
 		__asm
 		{
 			push eax
-			mov eax, cl_wallhack
+			mov eax, cl_EnableCheats
 			cmp byte ptr [eax + 12], 1
 			pop eax
 
@@ -36,7 +36,7 @@ namespace cheats
 		__asm
 		{
 			push eax
-			mov eax, cl_wallhack
+			mov eax, cl_EnableCheats
 			cmp byte ptr [eax + 12], 1
 			pop eax
 
@@ -62,7 +62,7 @@ namespace cheats
 	public:
 		void post_unpack() override
 		{
-			cl_wallhack = game::Dvar_RegisterBool("cl_EnableCheats", false, game::DVAR_FLAG_NONE, "Enable FoF wallhack");
+			cl_EnableCheats = game::Dvar_RegisterBool("cl_EnableCheats", false, game::DVAR_FLAG_NONE, "Enable FoF wallhack");
 
 			utils::hook::jump(0x430561, draw_red_box_stub);
 			utils::hook::nop(0x430566, 2);
@@ -76,12 +76,12 @@ namespace cheats
 		{
 			key_catcher::on_key_press("Z", [](const game::LocalClientNum_t&)
 			{
-				game::Dvar_SetBool(cl_wallhack, true);
+				game::Dvar_SetBool(cl_EnableCheats, true);
 			});
 
 			key_catcher::on_key_press("X", [](const game::LocalClientNum_t&)
 			{
-				game::Dvar_SetBool(cl_wallhack, false);
+				game::Dvar_SetBool(cl_EnableCheats, false);
 			});
 		}
 	};

@@ -22,6 +22,8 @@ namespace game
 		Dvar_RegisterString{0x4157E0};
 	WEAK symbol<dvar_t*(const char* dvarName, float value, float min, float max, unsigned __int16 flags, const char* description)>
 		Dvar_RegisterFloat{0x4A5CF0};
+	WEAK symbol<void(dvar_t* var, bool value)> Dvar_SetBool{0x46DD70};
+	WEAK symbol<void(const char* dvarName, bool value)> Dvar_SetBoolByName{0x48C7D0};
 
 	WEAK symbol<int(const char* cmd)> Key_GetBindingForCmd{0x47D300};
 	WEAK symbol<int(const char* keyAsText)> Key_StringToKeynum{0x50A710}; // Virtual-Key Code
@@ -29,10 +31,11 @@ namespace game
 
 	WEAK symbol<void(int arg, char* buffer, int bufferLength)> SV_Cmd_ArgvBuffer{0x4F6B00};
 
-	WEAK symbol<bool(netsrc_t, game::netadr_s dest, const char* message)> NET_OutOfBandPrint{0x496230};
+	WEAK symbol<bool(netsrc_t, netadr_s dest, const char* message)> NET_OutOfBandPrint{0x496230};
 	WEAK symbol<void()> Com_Quit_f{0x556060};
 
 	// Variables
 	WEAK symbol<CmdArgs> cmd_args{0x1C96850};
 	WEAK symbol<PlayerKeyState> playerKeys{0xB3A38C};
+	WEAK symbol<netadr_s> server_remote{0xB3D370};
 }

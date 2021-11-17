@@ -54,6 +54,11 @@ namespace key_catcher
 		{
 			cl_key_event_hook.create(0x4CD840, &cl_key_event_stub);
 		}
+
+		void pre_destroy() override
+		{
+			cl_key_event_hook.clear();
+		}
 	};
 }
 

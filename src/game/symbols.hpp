@@ -33,7 +33,20 @@ namespace game
 	WEAK symbol<void(int arg, char* buffer, int bufferLength)> SV_Cmd_ArgvBuffer{0x4F6B00};
 
 	WEAK symbol<bool(netsrc_t, netadr_s dest, const char* message)> NET_OutOfBandPrint{0x496230};
+	WEAK symbol<bool(netsrc_t, netadr_s dest, unsigned char* data, int size)> NET_OutOfBandData{0x4639C0};
+	WEAK symbol<void(netadr_s*, sockaddr*)> NetadrToSockadr{0x48B460};
+	WEAK symbol<int(const char* serverName, netadr_s serverRemote)> NET_StringToAdr{0x4E09A0};
+	WEAK symbol<SOCKET> query_socket{0x5A861EC};
 	WEAK symbol<void()> Com_Quit_f{0x556060};
+
+	WEAK symbol<void(const msg_t*, unsigned char*, int)> MSG_Init{0x40E030};
+	WEAK symbol<void(const msg_t*, const char*)> MSG_WriteString{0x42A560};
+	WEAK symbol<void(const msg_t*, unsigned __int64)> MSG_WriteInt64{0x4906B0};
+	WEAK symbol<void(const msg_t*, int)> MSG_WriteShort{0x4ACD80};
+	WEAK symbol<void(const msg_t*, const void*, int)> MSG_WriteData{0x4F8C20};
+
+	WEAK symbol<unsigned __int64()> LiveSteam_GetUid{0x4A4050};
+	WEAK symbol<int(unsigned __int64, const void*, unsigned int)> LiveSteam_Client_ConnectToSteamServer{0x4D6980};
 
 	// Variables
 	WEAK symbol<CmdArgs> cmd_args{0x1C96850};

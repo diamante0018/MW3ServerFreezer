@@ -71,6 +71,7 @@ namespace cheats
 
 			add_cheat_commands();
 		}
+
 	private:
 		static void add_cheat_commands()
 		{

@@ -22,11 +22,11 @@ namespace remove_hooks
 			utils::hook::set<BYTE>(0x4E3D45, 0xFE);
 			utils::hook::set<BYTE>(0x4E3D46, 0xFF);
 
-			utils::hook::set<BYTE>(0x06EA960, 0x55);
-			utils::hook::set<BYTE>(0x06EA961, 0x8B);
-			utils::hook::set<BYTE>(0x06EA962, 0xEC);
-			utils::hook::set<BYTE>(0x06EA963, 0x81);
-			utils::hook::set<BYTE>(0x06EA964, 0xEC);
+			utils::hook::set<BYTE>(0x6EA960, 0x55);
+			utils::hook::set<BYTE>(0x6EA961, 0x8B);
+			utils::hook::set<BYTE>(0x6EA962, 0xEC);
+			utils::hook::set<BYTE>(0x6EA963, 0x81);
+			utils::hook::set<BYTE>(0x6EA964, 0xEC);
 		}
 	};
 }

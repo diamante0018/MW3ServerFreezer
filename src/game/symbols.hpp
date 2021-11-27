@@ -34,6 +34,7 @@ namespace game
 
 	WEAK symbol<bool(netsrc_t, netadr_s dest, const char* message)> NET_OutOfBandPrint{0x496230};
 	WEAK symbol<bool(netsrc_t, netadr_s dest, unsigned char* data, int size)> NET_OutOfBandData{0x4639C0};
+	WEAK symbol<int(unsigned int, void*, netadr_s)> dwSendTo{0x673B20};
 	WEAK symbol<void(netadr_s*, sockaddr*)> NetadrToSockadr{0x48B460};
 	WEAK symbol<int(const char* serverName, netadr_s serverRemote)> NET_StringToAdr{0x4E09A0};
 	WEAK symbol<SOCKET> query_socket{0x5A861EC};

@@ -5,6 +5,7 @@
 namespace game
 {
 	// Functions
+	WEAK symbol<void()> Sys_ShowConsole{0x515CD0};
 	WEAK symbol<void(errorParm_t, const char* fmt, ...)> Com_Error{0x4A6660};
 	WEAK symbol<const char*(int index)> ConcatArgs{0x539060};
 	WEAK symbol<void(LocalClientNum_t, const char* text)> Cbuf_AddText{0x4C1030};
@@ -53,4 +54,7 @@ namespace game
 	WEAK symbol<CmdArgs> cmd_args{0x1C96850};
 	WEAK symbol<PlayerKeyState> playerKeys{0xB3A38C};
 	WEAK symbol<clientConnection_t> localClientConnection{0xB3D360};
+	WEAK symbol<HWND> g_wv_hWnd{0x5A86AF0};
+	WEAK symbol<HWND> s_wcd_hWnd{0x5A86330};
+	WEAK symbol<int> serverId{0x0FF5058};
 }

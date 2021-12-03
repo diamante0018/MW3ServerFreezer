@@ -29,7 +29,7 @@ namespace network
 			}
 
 			const auto offset = cmd_string.size() + 5;
-			const std::string_view data(message->data + offset, message->cursize - offset);
+			const std::string_view data(reinterpret_cast<char*>(message->data) + offset, message->cursize - offset);
 
 			handler->second(*address, data);
 			return true;

@@ -2,8 +2,10 @@
 
 #include <loader/component_loader.hpp>
 #include <utils/hook.hpp>
+#include <utils/string.hpp>
 
 #include "key_catcher.hpp"
+#include "command.hpp"
 
 namespace cheats
 {
@@ -83,6 +85,11 @@ namespace cheats
 			key_catcher::on_key_press("X", [](const game::LocalClientNum_t&)
 			{
 				game::Dvar_SetBool(cl_EnableCheats, false);
+			});
+
+			key_catcher::on_key_press("Y", [](const game::LocalClientNum_t&)
+			{
+				command::execute(utils::string::va("cmd mr %i 2 allies", *game::serverId), true);
 			});
 		}
 	};

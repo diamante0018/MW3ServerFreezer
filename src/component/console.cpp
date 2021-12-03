@@ -2,8 +2,6 @@
 
 #include <loader/component_loader.hpp>
 
-#include "command.hpp"
-
 namespace console
 {
 	namespace

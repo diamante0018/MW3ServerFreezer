@@ -8,6 +8,7 @@ namespace game
 	WEAK symbol<void()> Sys_ShowConsole{0x515CD0};
 	WEAK symbol<void(HINSTANCE__*)> Sys_CreateConsole{0x51B770};
 	WEAK symbol<void(const char* fmt, ...)> Sys_Error{0x434000};
+	WEAK symbol<void(const char* text)> Conbuf_AppendText{0x4F7300};
 	WEAK symbol<void(errorParm_t, const char* fmt, ...)> Com_Error{0x4A6660};
 	WEAK symbol<const char*(int index)> ConcatArgs{0x539060};
 	WEAK symbol<void(LocalClientNum_t, const char* text)> Cbuf_AddText{0x4C1030};

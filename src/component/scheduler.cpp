@@ -101,7 +101,7 @@ namespace scheduler
 
 		void cl_frame_stub(game::LocalClientNum_t local)
 		{
-			reinterpret_cast<void (*)(game::LocalClientNum_t)>(0x041C9B0)(local);
+			reinterpret_cast<void (*)(game::LocalClientNum_t)>(0x41C9B0)(local);
 			execute(pipeline::client);
 		}
 	}
@@ -162,7 +162,7 @@ namespace scheduler
 
 			async_thread_id = thread.get_id();
 
-			utils::hook::call(0x04E4A0D, cl_frame_stub);
+			utils::hook::call(0x4E4A0D, cl_frame_stub);
 		}
 	};
 }

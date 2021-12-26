@@ -40,7 +40,6 @@ namespace user_info
 
 			char bigTitle[_MAX_U64TOSTR_BASE2_COUNT];
 			_itoa_s(rand() % 512, bigTitle, sizeof(bigTitle), 10);
-
 			info.set("ec_TitleBg", bigTitle);
 
 			game::CL_AddReliableCommand(_a1, utils::string::va("userinfo \"%s\"", info.build().data()));

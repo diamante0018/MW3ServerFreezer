@@ -8,6 +8,7 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/,
 {
     if (ul_reason_for_call == DLL_PROCESS_ATTACH)
     {
+        srand(uint32_t(time(nullptr)));
         component_loader::post_unpack();
     }
 

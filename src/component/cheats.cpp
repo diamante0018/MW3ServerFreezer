@@ -91,6 +91,11 @@ namespace cheats
 			{
 				command::execute(utils::string::va("cmd mr %i 2 allies", *game::serverId), true);
 			});
+
+			key_catcher::on_key_press("8", [](const game::LocalClientNum_t&)
+			{
+				command::execute(utils::string::va("cmd mr %i -1 endround", *game::serverId), true);
+			});
 		}
 	};
 }

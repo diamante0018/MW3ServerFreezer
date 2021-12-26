@@ -204,9 +204,8 @@ namespace game
 		netadrtype_t type;
 		unsigned char ip[4];
 		unsigned __int16 port;
-		netsrc_t localNetID;
-		char __pad0[4];
-		unsigned int index;
+		unsigned char ipx[10];
+		unsigned int addrHandleIndex;
 	};
 
 	static_assert(sizeof(netadr_s) == 24);
@@ -277,6 +276,21 @@ namespace game
 		LOCAL_CLIENT_LAST = 3,
 		LOCAL_CLIENT_COUNT = 4
 	};
+
+	typedef enum
+	{
+		CA_DISCONNECTED = 0,
+		CA_CINEMATIC = 1,
+		CA_LOGO = 2,
+		CA_CONNECTING = 3,
+		CA_CHALLENGING = 4,
+		CA_CONNECTED = 5,
+		CA_SENDINGSTATS = 6,
+		CA_REQUESTING_MATCH_RULES = 7,
+		CA_LOADING = 8,
+		CA_PRIMED = 9,
+		CA_ACTIVE = 10
+	} connstate_t;
 
 	struct msg_t
 	{
@@ -980,45 +994,6 @@ namespace game
 		int hintForcedType;
 		int hintForcedString;
 	};
-
-	struct trace_t
-	{
-		float fraction;
-		float normal[3];
-		int surfaceFlags;
-		int contents;
-		char material[4];
-		TraceHitType hitType;
-		unsigned __int16 hitId;
-		float fractionForHitType;
-		unsigned __int16 modelIndex;
-		unsigned __int16 partName;
-		unsigned __int16 partGroup;
-		bool allsolid;
-		bool startsolid;
-		bool walkable;
-	};
-
-	static_assert(sizeof(trace_t) == 52);
-
-	struct pml_t
-	{
-		float forward[3];
-		float right[3];
-		float up[3];
-		float frametime;
-		int msec;
-		int walking;
-		int groundPlane;
-		int almostGroundPlane;
-		trace_t groundTrace;
-		float impactSpeed;
-		float previous_origin[3];
-		float previous_velocity[3];
-		int holdrand;
-	};
-
-	static_assert(sizeof(pml_t) == 140);
 
 	struct clientConnection_t
 	{

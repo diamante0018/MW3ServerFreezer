@@ -29,6 +29,7 @@ namespace game
 		Dvar_RegisterFloat{0x4A5CF0};
 	WEAK symbol<void(dvar_t* var, bool value)> Dvar_SetBool{0x46DD70};
 	WEAK symbol<void(const char* dvarName, bool value)> Dvar_SetBoolByName{0x48C7D0};
+	WEAK symbol<const char*(int, int)> Dvar_InfoString{0x4028C0};
 
 	WEAK symbol<int(const char* cmd)> Key_GetBindingForCmd{0x47D300};
 	WEAK symbol<int(const char* keyAsText)> Key_StringToKeynum{0x50A710}; // Virtual-Key Code
@@ -49,6 +50,7 @@ namespace game
 	WEAK symbol<void(const msg_t*, unsigned __int64)> MSG_WriteInt64{0x4906B0};
 	WEAK symbol<void(const msg_t*, int)> MSG_WriteShort{0x4ACD80};
 	WEAK symbol<void(const msg_t*, const void*, int)> MSG_WriteData{0x4F8C20};
+	WEAK symbol<void(int, const char*)> CL_AddReliableCommand{0x4EE3A0};
 
 	WEAK symbol<unsigned __int64()> LiveSteam_GetUid{0x4A4050};
 	WEAK symbol<int(unsigned __int64, const void*, unsigned int)> LiveSteam_Client_ConnectToSteamServer{0x4D6980};
@@ -60,4 +62,6 @@ namespace game
 	WEAK symbol<HWND> g_wv_hWnd{0x5A86AF0};
 	WEAK symbol<HWND> s_wcd_hWnd{0x5A86330};
 	WEAK symbol<int> serverId{0xFF5058};
+	WEAK symbol<connstate_t> connectionState{0x1060214};
+	WEAK symbol<dvar_t> cl_paused{0x1CE6190};
 }

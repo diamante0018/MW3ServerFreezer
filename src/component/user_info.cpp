@@ -27,19 +27,17 @@ namespace user_info
 
 			const auto colorCode = rand() % 10;
 
-			char numbers[_MAX_U64TOSTR_BASE2_COUNT];
 			char name[16];
 
-			_itoa_s(rand() % 10000, numbers, sizeof(numbers), 10);
-			_snprintf_s(name, sizeof(name), _TRUNCATE, "^%d%s", colorCode, numbers);
+			const auto& numbers = std::to_string(rand() % 10000);
+			_snprintf_s(name, sizeof(name), _TRUNCATE, "^%d%s", colorCode, numbers.data());
 
 			info.set("name", name);
 
 			info.set("ec_usingTag", "1");
 			info.set("ec_TagText", utils::string::va("^%dGG", colorCode));
 
-			char bigTitle[_MAX_U64TOSTR_BASE2_COUNT];
-			_itoa_s(rand() % 512, bigTitle, sizeof(bigTitle), 10);
+			const auto& bigTitle = std::to_string(rand() % 512);
 			info.set("ec_TitleBg", bigTitle);
 
 			game::CL_AddReliableCommand(_a1, utils::string::va("userinfo \"%s\"", info.build().data()));

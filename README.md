@@ -1,3 +1,5 @@
+[![build](https://github.com/diamante0018/MW3ServerFreezer/workflows/Build/badge.svg)](https://github.com/diamante0018/MW3ServerFreezer/actions)
+
 # MW3ServerFreezer
 Remastered MW3 Server Freezer for the 1.4:382 version of the game (client).
 

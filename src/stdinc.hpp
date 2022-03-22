@@ -4,23 +4,21 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#include <windows.h>
 #include <WinSock2.h>
+#include <windows.h>
 
-#include <vector>
+#include <algorithm>
 #include <cassert>
+#include <functional>
+#include <iostream>
 #include <mutex>
 #include <string>
-#include <iostream>
-#include <algorithm>
-#include <functional>
-#include <unordered_set>
-#include <map>
-#include <vector>
 
 #pragma comment(lib, "ntdll.lib")
 
 using namespace std::literals;
 
+// clang-format off
 #include "game/structs.hpp"
 #include "game/game.hpp"
+// clang-format on

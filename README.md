@@ -14,8 +14,7 @@ If you think your server is vulnerable you should seek help in the appropriate d
 ## Compile from source
 
 - Clone the Git repo. Do NOT download it as ZIP, that won't work.
-- Update the submodules and run `premake5 vs2019` or simply use the delivered `generate.bat`.
-- Visual Studio Properties -> Linker -> Input -> Module Definition File -> add module.def located in src folder
+- Update the submodules and run `premake5 vs2022` or simply use the delivered `generate.bat`.
 - Build via solution file in `build\mw3-server-freezer.sln`.
 
 ## Commands

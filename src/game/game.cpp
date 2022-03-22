@@ -1,5 +1,3 @@
 #include <stdinc.hpp>
 
-namespace game
-{
-}
+namespace game {}

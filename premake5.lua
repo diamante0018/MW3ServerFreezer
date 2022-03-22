@@ -36,36 +36,39 @@ workspace "mw3-server-freezer"
     targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
     targetname "%{prj.name}"
 
-    language "C++"
-
-    architecture "x86"
-    platforms "x86"
-
-    buildoptions "/std:c++latest"
-    systemversion "latest"
-
-    flags { "NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks" }
-
     configurations {"Debug", "Release"}
 
+    language "C++"
+    cppdialect "C++20"
+
+    architecture "x86"
+    platforms "Win32"
+
+    systemversion "latest"
     symbols "On"
     staticruntime "On"
     editandcontinue "Off"
     warnings "Extra"
     characterset "ASCII"
 
-    configuration "Release"
+    flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
+
+    filter "platforms:Win*"
+        defines {"_WINDOWS", "WIN32"}
+    filter {}
+
+    filter "configurations:Release"
         optimize "Size"
         defines {"NDEBUG"}
         flags {"FatalCompileWarnings"}
         buildoptions {"/GL"}
         linkoptions { "/IGNORE:4702", "/LTCG" }
-    configuration {}
+        filter {}
 
-    configuration "Debug"
+    filter "configurations:Debug"
         optimize "Debug"
         defines {"DEBUG", "_DEBUG"}
-    configuration {}
+    filter {}
 
 project "mw3-server-freezer"
     kind "SharedLib"

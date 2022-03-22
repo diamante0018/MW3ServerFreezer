@@ -25,11 +25,10 @@ void cl_check_user_info(int _a1, const int force) {
 
   const auto color_code = std::rand() % 10;
 
-  char name[16];
+  char name[32];
 
   const auto numbers = std::to_string(std::rand() % 10000);
-  _snprintf_s(name, sizeof(name), _TRUNCATE, "^%d%s", color_code,
-              numbers.data());
+  _snprintf_s(name, _TRUNCATE, "^%d%s", color_code, numbers.data());
 
   info.set("name", name);
 

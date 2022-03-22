@@ -44,17 +44,16 @@ void cl_check_user_info(int _a1, const int force) {
 }
 
 __declspec(naked) void cl_check_user_info_stub() {
-  __asm
-  {
-				pushad
+  __asm {
+    pushad
 
-				push 0
-				push esi
-				call cl_check_user_info
-				add esp, 8
+    push 0
+    push esi
+    call cl_check_user_info
+    add esp, 8
 
-				popad
-				ret
+    popad
+    ret
   }
 }
 } // namespace

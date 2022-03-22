@@ -12,45 +12,45 @@ game::dvar_t* cl_EnableCheats;
 
 __declspec(naked) void draw_red_box_stub() {
   __asm {
-			push eax
-			mov eax, cl_EnableCheats
-			cmp byte ptr [eax + 12], 1
-			pop eax
+    push eax
+    mov eax, cl_EnableCheats
+    cmp byte ptr [eax + 12], 1
+    pop eax
 
-			je draw
+    je draw
 
-			test byte ptr ds:0x8FF110, 0x10
+    test byte ptr ds:0x8FF110, 0x10
 
-			push 0x430568
-			retn
+    push 0x430568
+    retn
 
-		draw:
-			push 0x43056A
-			retn
+  draw:
+    push 0x43056A
+    retn
   }
 }
 
 __declspec(naked) void blind_eye_check_stub() {
   __asm {
-			push eax
-			mov eax, cl_EnableCheats
-			cmp byte ptr [eax + 12], 1
-			pop eax
+    push eax
+    mov eax, cl_EnableCheats
+    cmp byte ptr [eax + 12], 1
+    pop eax
 
-			je draw
+    je draw
 
-			test byte ptr [esi], 0x20
-			jnz skip_because_blindeye
+    test byte ptr [esi], 0x20
+    jnz skip_because_blindeye
 
-			jmp draw
+    jmp draw
 
-		skip_because_blindeye:
-			push 0x5AA5A2
-			retn
+  skip_because_blindeye:
+    push 0x5AA5A2
+    retn
 
-		draw:
-			push 0x05AA529
-			retn
+  draw:
+    push 0x05AA529
+    retn
   }
 }
 

@@ -1,10 +1,11 @@
 #include <std_include.hpp>
 #include "../loader/component_loader.hpp"
 
+#include <utils/thread.hpp>
+
 namespace console {
 namespace {
 std::thread thread;
-std::thread::id async_thread_id;
 
 LRESULT __stdcall sys_start_console(HWND, UINT, WPARAM, LPARAM) {
   game::Sys_ShowConsole();
@@ -29,12 +30,16 @@ void show_console() {
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    thread = std::thread([]() {
+    thread = utils::thread::create_named_thread("Console Thread", []() {
       console_unlock();
       show_console();
     });
+  }
 
-    async_thread_id = thread.get_id();
+  void pre_destroy() override {
+    if (thread.joinable()) {
+      thread.join();
+    }
   }
 };
 } // namespace console

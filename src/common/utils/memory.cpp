@@ -1,5 +1,3 @@
-#include <stdinc.hpp>
-
 #include "memory.hpp"
 #include "nt.hpp"
 
@@ -50,7 +48,7 @@ char* memory::allocator::duplicate_string(const std::string& string) {
   return data;
 }
 
-void* memory::allocate(const size_t length) { return calloc(length, 1); }
+void* memory::allocate(const size_t length) { return std::calloc(length, 1); }
 
 char* memory::duplicate_string(const std::string& string) {
   const auto new_string = allocate_array<char>(string.size() + 1);
@@ -60,7 +58,7 @@ char* memory::duplicate_string(const std::string& string) {
 
 void memory::free(void* data) {
   if (data) {
-    ::free(data);
+    std::free(data);
   }
 }
 

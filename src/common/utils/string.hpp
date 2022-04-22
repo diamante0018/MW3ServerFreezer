@@ -1,6 +1,10 @@
 #pragma once
 #include "memory.hpp"
 
+#ifndef ARRAYSIZE
+template <class Type, size_t n> size_t ARRAYSIZE(Type (&)[n]) { return n; }
+#endif
+
 namespace utils::string {
 template <size_t Buffers, size_t MinBufferSize> class va_provider final {
 public:
@@ -19,7 +23,7 @@ public:
 
     while (true) {
       const int res =
-          vsnprintf_s(entry->buffer, entry->size, _TRUNCATE, format, ap);
+          _vsnprintf_s(entry->buffer, entry->size, _TRUNCATE, format, ap);
       if (res > 0)
         break; // Success
       if (res == 0)

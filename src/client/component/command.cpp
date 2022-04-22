@@ -1,6 +1,6 @@
-#include <stdinc.hpp>
+#include <std_include.hpp>
+#include "../loader/component_loader.hpp"
 
-#include <loader/component_loader.hpp>
 #include <utils/string.hpp>
 #include <utils/nt.hpp>
 
@@ -84,8 +84,7 @@ public:
 private:
   static void add_commands_generic() {
     // Will cause blue screen
-    add("quit_meme", utils::nt::raise_hard_exception);
-
+    add("quitMeme", utils::nt::raise_hard_exception);
     add("quit", game::Com_Quit_f);
   }
 };

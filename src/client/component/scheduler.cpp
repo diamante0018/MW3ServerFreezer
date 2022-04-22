@@ -1,14 +1,13 @@
-#include <stdinc.hpp>
-#include <loader/component_loader.hpp>
+#include <std_include.hpp>
+#include "../loader/component_loader.hpp"
 
 #include <utils/concurrency.hpp>
 #include <utils/hook.hpp>
+#include <utils/thread.hpp>
 
 #include "scheduler.hpp"
 
 namespace scheduler {
-std::thread::id async_thread_id;
-
 namespace {
 struct task {
   std::function<bool()> handler{};
@@ -74,6 +73,7 @@ private:
   }
 };
 
+volatile bool kill = false;
 std::thread thread;
 task_pipeline pipelines[pipeline::count];
 
@@ -82,9 +82,14 @@ void execute(const pipeline type) {
   pipelines[type].execute();
 }
 
-void cl_frame_stub(game::LocalClientNum_t local) {
-  reinterpret_cast<void (*)(game::LocalClientNum_t)>(0x41C9B0)(local);
+void cl_frame_stub(game::LocalClientNum_t localClientNum) {
+  utils::hook::invoke<void>(0x41C9B0, localClientNum);
   execute(pipeline::client);
+}
+
+void main_frame_stub() {
+  utils::hook::invoke<void>(0x4E46A0);
+  execute(pipeline::main);
 }
 } // namespace
 
@@ -127,16 +132,22 @@ unsigned int thread_id;
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    thread = std::thread([]() {
-      while (true) {
+    thread = utils::thread::create_named_thread("Async Scheduler", []() {
+      while (!kill) {
         execute(pipeline::async);
         std::this_thread::sleep_for(10ms);
       }
     });
 
-    async_thread_id = thread.get_id();
-
     utils::hook::call(0x4E4A0D, cl_frame_stub);
+    utils::hook::call(0x543B0E, main_frame_stub);
+  }
+
+  void pre_destroy() override {
+    kill = true;
+    if (thread.joinable()) {
+      thread.join();
+    }
   }
 };
 } // namespace scheduler

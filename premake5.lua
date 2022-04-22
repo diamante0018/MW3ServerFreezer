@@ -31,55 +31,74 @@ end
 dependencies.load()
 
 workspace "mw3-server-freezer"
-    location "./build"
-    objdir "%{wks.location}/obj"
-    targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
-    targetname "%{prj.name}"
+location "./build"
+objdir "%{wks.location}/obj"
+targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
 
-    configurations {"Debug", "Release"}
+configurations {"Debug", "Release"}
 
-    language "C++"
-    cppdialect "C++20"
+language "C++"
+cppdialect "C++20"
 
-    architecture "x86"
-    platforms "Win32"
+architecture "x86"
+platforms "Win32"
 
-    systemversion "latest"
-    symbols "On"
-    staticruntime "On"
-    editandcontinue "Off"
-    warnings "Extra"
-    characterset "ASCII"
+systemversion "latest"
+symbols "On"
+staticruntime "On"
+editandcontinue "Off"
+warnings "Extra"
+characterset "ASCII"
 
-    flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
+flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
 
-    filter "platforms:Win*"
-        defines {"_WINDOWS", "WIN32"}
-    filter {}
+filter "platforms:Win*"
+	defines {"_WINDOWS", "WIN32"}
+filter {}
 
-    filter "configurations:Release"
-        optimize "Size"
-        defines {"NDEBUG"}
-        flags {"FatalCompileWarnings"}
-        buildoptions {"/GL"}
-        linkoptions { "/IGNORE:4702", "/LTCG" }
-        filter {}
+filter "configurations:Release"
+	optimize "Size"
+	defines {"NDEBUG"}
+	flags {"FatalCompileWarnings"}
+	buildoptions {"/GL"}
+	linkoptions { "/IGNORE:4702", "/LTCG" }
+filter {}
 
-    filter "configurations:Debug"
-        optimize "Debug"
-        defines {"DEBUG", "_DEBUG"}
-    filter {}
+filter "configurations:Debug"
+	optimize "Debug"
+	defines {"DEBUG", "_DEBUG"}
+filter {}
 
-project "mw3-server-freezer"
-    kind "SharedLib"
-    language "C++"
+project "common"
+kind "StaticLib"
+language "C++"
 
-    pchheader "stdinc.hpp"
-    pchsource "src/stdinc.cpp"
+files {"./src/common/**.hpp", "./src/common/**.cpp"}
 
-    files { "./src/**.hpp", "./src/**.cpp" }
+includedirs {"./src/common", "%{prj.location}/src"}
 
-    includedirs { "src" }
+resincludedirs {"$(ProjectDir)src"}
+
+dependencies.imports()
+
+project "client"
+kind "SharedLib"
+language "C++"
+
+targetname "mw3-server-freezer"
+
+pchheader "std_include.hpp"
+pchsource "src/client/std_include.cpp"
+
+linkoptions {"/IGNORE:4254", "/PDBCompress"}
+
+files {"./src/client/**.hpp", "./src/client/**.cpp"}
+
+includedirs {"./src/client", "./src/common", "%{prj.location}/src"}
+
+resincludedirs {"$(ProjectDir)src"}
+
+links {"common"}
 
 dependencies.imports()
 

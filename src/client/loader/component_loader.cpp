@@ -1,4 +1,4 @@
-#include <stdinc.hpp>
+#include <std_include.hpp>
 #include "component_loader.hpp"
 
 void component_loader::register_component(

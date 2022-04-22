@@ -1,6 +1,6 @@
-#include <stdinc.hpp>
+#include <std_include.hpp>
+#include "../loader/component_loader.hpp"
 
-#include <loader/component_loader.hpp>
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
@@ -49,7 +49,7 @@ __declspec(naked) void blind_eye_check_stub() {
     retn
 
   draw:
-    push 0x05AA529
+    push 0x5AA529
     retn
   }
 }

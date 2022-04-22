@@ -1,11 +1,10 @@
 #pragma once
 
 namespace scheduler {
-extern std::thread::id async_thread_id;
-
 enum pipeline {
   client,
   async,
+  main,
   count,
 };
 

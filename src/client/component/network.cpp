@@ -1,6 +1,6 @@
-#include <stdinc.hpp>
+#include <std_include.hpp>
+#include "../loader/component_loader.hpp"
 
-#include <loader/component_loader.hpp>
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
@@ -18,6 +18,7 @@ bool handle_command(game::netadr_s* address, const char* command,
                     game::msg_t* msg) {
   const auto cmd_string = utils::string::to_lower(command);
   auto& callbacks = get_callbacks();
+
   const auto handler = callbacks.find(cmd_string);
   const auto offset = cmd_string.size() + 5;
 
@@ -37,9 +38,7 @@ bool handle_command(game::netadr_s* address, const char* command,
 int packet_interception_handler(game::netadr_s* from, const char* command,
                                 game::msg_t* message) {
   if (!handle_command(from, command, message)) {
-    return reinterpret_cast<int (*)(game::netadr_s*, const char*,
-                                    game::msg_t*)>(0x525730)(from, command,
-                                                             message);
+    return utils::hook::invoke<int>(0x525730, from, command, message);
   }
 
   return TRUE;
@@ -61,7 +60,7 @@ private:
   static void add_network_commands() {
     on_packet("naughty_reply",
               [](const game::netadr_s&, const std::string_view&) {
-                command::execute("quit_meme");
+                command::execute("quitMeme");
               });
   }
 };

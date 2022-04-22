@@ -1,6 +1,5 @@
-#include <stdinc.hpp>
-
-#include <loader/component_loader.hpp>
+#include <std_include.hpp>
+#include "../loader/component_loader.hpp"
 
 namespace console {
 namespace {

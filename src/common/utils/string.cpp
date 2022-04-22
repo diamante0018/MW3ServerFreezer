@@ -1,9 +1,7 @@
-#include <stdinc.hpp>
-
 #include "string.hpp"
-#include <algorithm>
-#include <cstdarg>
 #include <sstream>
+#include <cstdarg>
+#include <algorithm>
 
 #include "nt.hpp"
 

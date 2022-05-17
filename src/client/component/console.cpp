@@ -2,7 +2,6 @@
 #include "../loader/component_loader.hpp"
 
 #include <utils/thread.hpp>
-#include <utils/string.hpp>
 
 #include "console.hpp"
 

@@ -3,9 +3,13 @@
 
 #include <utils/hook.hpp>
 
+#include "console.hpp"
+
 namespace dvar_patches {
-void dvar_set_from_string_by_name_stub(const char* /*dvarName*/,
-                                       const char* /*string*/) {}
+void dvar_set_from_string_by_name_stub(const char* dvar_name,
+                                       const char* string) {
+  console::print("Server tried setting {} with value {}", dvar_name, string);
+}
 
 class component final : public component_interface {
 public:

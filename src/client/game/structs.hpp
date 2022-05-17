@@ -159,14 +159,29 @@ struct netchan_t {
 static_assert(sizeof(netchan_t) == 0x630);
 
 enum dvar_flags : std::uint16_t {
-  DVAR_NONE = 0x0,
-  DVAR_ARCHIVE = 0x1,
-  DVAR_CHEAT = 0x4,
-  DVAR_CODINFO = 0x8,
-  DVAR_SCRIPTINFO = 0x10,
-  DVAR_SERVERINFO = 0x400,
-  DVAR_WRITEPROTECTED = 0x800,
-  DVAR_READONLY = 0x2000,
+  DVAR_NONE = 0,
+  DVAR_ARCHIVE = 1 << 0,
+  DVAR_LATCH = 1 << 1,
+  DVAR_CHEAT = 1 << 2,
+  DVAR_CODINFO = 1 << 3,
+  DVAR_SCRIPTINFO = 1 << 4,
+  DVAR_SERVERINFO = 1 << 10,
+  DVAR_WRITEPROTECTED = 1 << 11,
+  DVAR_READONLY = 1 << 13,
+  DVAR_AUTOEXEC = 1 << 15,
+};
+
+enum dvar_type : std::int8_t {
+  DVAR_TYPE_BOOL = 0x0,
+  DVAR_TYPE_FLOAT = 0x1,
+  DVAR_TYPE_FLOAT_2 = 0x2,
+  DVAR_TYPE_FLOAT_3 = 0x3,
+  DVAR_TYPE_FLOAT_4 = 0x4,
+  DVAR_TYPE_INT = 0x5,
+  DVAR_TYPE_ENUM = 0x6,
+  DVAR_TYPE_STRING = 0x7,
+  DVAR_TYPE_COLOR = 0x8,
+  DVAR_TYPE_FLOAT_3_COLOR = 0x9,
 };
 
 union DvarValue {
@@ -306,6 +321,39 @@ struct clientConnection_t {
 };
 
 struct clientStatic_t {};
+
+struct ScreenPlacement {
+  float scaleVirtualToReal[2];
+  float scaleVirtualToFull[2];
+  float scaleRealToVirtual[2];
+  float realViewportPosition[2];
+  float realViewportSize[2];
+  float virtualViewableMin[2];
+  float virtualViewableMax[2];
+  float realViewableMin[2];
+  float realViewableMax[2];
+  float virtualAdjustableMin[2];
+  float virtualAdjustableMax[2];
+  float realAdjustableMin[2];
+  float realAdjustableMax[2];
+  float subScreenLeft;
+};
+
+static_assert(sizeof(ScreenPlacement) == 0x6C);
+
+struct Font_s {
+  const char* fontName;
+  int pixelHeight;
+  int glyphCount;
+  void* material;
+  void* glowMaterial;
+  void* glyphs;
+};
+
+union XAssetHeader {
+  Font_s* font;
+};
+
 } // namespace game
 
 #pragma warning(pop)

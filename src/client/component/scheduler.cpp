@@ -87,6 +87,11 @@ void cl_frame_stub(game::LocalClientNum_t localClientNum) {
   execute(pipeline::client);
 }
 
+void r_end_frame_stub() {
+  utils::hook::invoke<void>(0x4FF340);
+  execute(pipeline::renderer);
+}
+
 void main_frame_stub() {
   utils::hook::invoke<void>(0x4E46A0);
   execute(pipeline::main);
@@ -140,6 +145,7 @@ public:
     });
 
     utils::hook::call(0x4E4A0D, cl_frame_stub);
+    utils::hook::call(0x5B54D2, r_end_frame_stub);
     utils::hook::call(0x543B0E, main_frame_stub);
   }
 

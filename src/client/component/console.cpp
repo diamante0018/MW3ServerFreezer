@@ -2,6 +2,9 @@
 #include "../loader/component_loader.hpp"
 
 #include <utils/thread.hpp>
+#include <utils/string.hpp>
+
+#include "console.hpp"
 
 namespace console {
 namespace {
@@ -26,6 +29,28 @@ void show_console() {
   }
 }
 } // namespace
+
+#ifdef _DEBUG
+void console_print(const std::source_location& location, std::string_view fmt,
+                   std::format_args&& args) {
+#else
+void console_print(std::string_view fmt, std::format_args&& args) {
+#endif
+#ifdef _DEBUG
+  const auto msg = std::vformat(fmt, args);
+  const auto line =
+      std::format("Debug:\n    {}\nFile: {}\nFunction: {}\n\n", msg,
+                  location.file_name(), location.function_name());
+#else
+  const auto line = std::vformat(fmt, args);
+#endif
+
+  if (IsDebuggerPresent()) {
+    OutputDebugStringA(line.data());
+  }
+
+  game::Conbuf_AppendText(line.data());
+}
 
 class component final : public component_interface {
 public:

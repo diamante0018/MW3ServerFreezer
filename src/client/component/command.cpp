@@ -5,6 +5,7 @@
 #include <utils/nt.hpp>
 
 #include "command.hpp"
+#include "console.hpp"
 
 constexpr auto CMD_MAX_NESTING = 8;
 
@@ -86,6 +87,27 @@ private:
     // Will cause blue screen
     add("quitMeme", utils::nt::raise_hard_exception);
     add("quit", game::Com_Quit_f);
+    add("vstr", [](const params& params) {
+      if (params.size() < 2) {
+        console::print("vstr <variablename> : execute a variable command");
+        return;
+      }
+
+      const auto* dvar_name = params.get(1);
+      const auto* dvar = game::Dvar_FindVar(dvar_name);
+
+      if (dvar == nullptr) {
+        console::print("{} doesn't exist", dvar_name);
+        return;
+      }
+      if (dvar->type != game::dvar_type::DVAR_TYPE_STRING &&
+          dvar->type != game::dvar_type::DVAR_TYPE_ENUM) {
+        console::print("{} is not a string-based dvar\n", dvar->name);
+        return;
+      }
+
+      execute(dvar->current.string);
+    });
   }
 };
 } // namespace command

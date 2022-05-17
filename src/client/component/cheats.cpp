@@ -6,11 +6,12 @@
 
 #include "key_catcher.hpp"
 #include "command.hpp"
+#include "console.hpp"
 
 namespace cheats {
 game::dvar_t* cl_EnableCheats;
 
-__declspec(naked) void draw_red_box_stub() {
+void __declspec(naked) draw_red_box_stub() {
   __asm {
     push eax
     mov eax, cl_EnableCheats
@@ -30,7 +31,7 @@ __declspec(naked) void draw_red_box_stub() {
   }
 }
 
-__declspec(naked) void blind_eye_check_stub() {
+void __declspec(naked) blind_eye_check_stub() {
   __asm {
     push eax
     mov eax, cl_EnableCheats
@@ -73,24 +74,29 @@ private:
     key_catcher::on_key_press(
         "Z", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
           game::Dvar_SetBool(cl_EnableCheats, true);
+          console::print("Enabled cl_EnableCheats");
         });
 
     key_catcher::on_key_press(
         "X", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
           game::Dvar_SetBool(cl_EnableCheats, false);
+          console::print("Disabled cl_EnableCheats");
         });
 
     key_catcher::on_key_press(
         "Y", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
-          command::execute(
-              utils::string::va("cmd mr %i 2 allies", *game::serverId), true);
+          const auto* cmd =
+              utils::string::va("cmd mr %i 2 allies", *game::serverId);
+          command::execute(cmd, true);
+          console::print("Executed: {}", cmd);
         });
 
     key_catcher::on_key_press(
         "8", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
-          command::execute(
-              utils::string::va("cmd mr %i -1 endround", *game::serverId),
-              true);
+          const auto* cmd =
+              utils::string::va("cmd mr %i -1 endround", *game::serverId);
+          command::execute(cmd, true);
+          console::print("Executed: {}", cmd);
         });
   }
 };

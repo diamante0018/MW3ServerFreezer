@@ -3,7 +3,6 @@
 
 #include <utils/hook.hpp>
 
-#include "scheduler.hpp"
 #include "console.hpp"
 
 namespace dvar_patches {

@@ -45,8 +45,12 @@ public:
   void post_start() override { remove_tekno_hooks(); }
 
   void post_unpack() override {
-    utils::hook::call(0x4E3D42, msg_read_bits_compress_check_sv);
-    utils::hook::call(0x4A9F56, msg_read_bits_compress_check_cl);
+    utils::hook(0x4E3D42, msg_read_bits_compress_check_sv, HOOK_CALL)
+        .install()
+        ->quick();
+    utils::hook(0x4A9F56, msg_read_bits_compress_check_cl, HOOK_CALL)
+        .install()
+        ->quick();
   }
 
 private:

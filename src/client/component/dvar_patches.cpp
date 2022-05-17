@@ -14,7 +14,9 @@ void dvar_set_from_string_by_name_stub(const char* dvar_name,
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    utils::hook::call(0x59C0EF, dvar_set_from_string_by_name_stub);
+    utils::hook(0x59C0EF, dvar_set_from_string_by_name_stub, HOOK_CALL)
+        .install()
+        ->quick();
   }
 };
 } // namespace dvar_patches

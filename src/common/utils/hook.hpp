@@ -1,102 +1,120 @@
 #pragma once
-#include "signature.hpp"
+#include <mutex>
+#include "nt.hpp"
 
-#define CalculateRelativeJMPAddress(X, Y)                                      \
-  (((std::uintptr_t)Y - (std::uintptr_t)X) - 5)
+#define HOOK_JUMP true
+#define HOOK_CALL false
 
-namespace utils::hook {
-class detour {
+namespace utils {
+class hook final {
 public:
-  detour() = default;
-  detour(void* place, void* target);
-  detour(size_t place, void* target);
-  ~detour();
+  class signature final {
+  public:
+    struct container final {
+      const char* signature;
+      const char* mask;
+      std::function<void(char*)> callback;
+    };
 
-  detour(detour&& other) noexcept { this->operator=(std::move(other)); }
+    signature(void* start, const size_t length)
+        : start_(start), length_(length) {}
 
-  detour& operator=(detour&& other) noexcept {
-    if (this != &other) {
-      this->~detour();
+    signature(const DWORD start, const size_t length)
+        : signature(reinterpret_cast<void*>(start), length) {}
 
-      this->place_ = other.place_;
-      this->original_ = other.original_;
+    signature() : signature(0x400000, 0x800000) {}
 
-      other.place_ = nullptr;
-      other.original_ = nullptr;
-    }
+    void process();
+    void add(const container& container);
 
-    return *this;
+  private:
+    void* start_;
+    size_t length_;
+    std::vector<container> signatures_;
+  };
+
+  hook()
+      : initialized_(false), installed_(false), place_(nullptr), stub_(nullptr),
+        original_(nullptr), use_jump_(false), protection_(0) {
+    ZeroMemory(this->buffer_, sizeof(this->buffer_));
   }
 
-  detour(const detour&) = delete;
-  detour& operator=(const detour&) = delete;
-
-  void enable() const;
-  void disable() const;
-
-  void create(void* place, void* target);
-  void create(size_t place, void* target);
-  void clear();
-
-  template <typename T> T* get() const {
-    return static_cast<T*>(this->get_original());
+  hook(void* place, void* stub, const bool use_jump = true) : hook() {
+    this->initialize(place, stub, use_jump);
   }
 
-  template <typename T, typename... Args> T invoke(Args... args) {
-    return static_cast<T (*)(Args...)>(this->get_original())(args...);
+  hook(void* place, void (*stub)(), const bool use_jump = true)
+      : hook(place, reinterpret_cast<void*>(stub), use_jump) {}
+
+  hook(const DWORD place, void* stub, const bool use_jump = true)
+      : hook(reinterpret_cast<void*>(place), stub, use_jump) {}
+
+  hook(const DWORD place, const DWORD stub, const bool use_jump = true)
+      : hook(reinterpret_cast<void*>(place), reinterpret_cast<void*>(stub),
+             use_jump) {}
+
+  hook(const DWORD place, void (*stub)(), const bool use_jump = true)
+      : hook(reinterpret_cast<void*>(place), reinterpret_cast<void*>(stub),
+             use_jump) {}
+
+  hook(const hook&) = delete;
+  hook(const hook&&) = delete;
+
+  ~hook();
+
+  hook* initialize(void* place, void* stub, bool use_jump = true);
+  hook* initialize(DWORD place, void* stub, bool use_jump = true);
+  hook* initialize(DWORD place, void (*stub)(),
+                   bool use_jump = true); // For lambdas
+  hook* install(bool unprotect = true, bool keep_unprotected = false);
+  hook* uninstall(bool unprotect = true);
+
+  void* get_address() const;
+  void* get_original() const;
+  void quick();
+
+  static bool iat(nt::library module, const std::string& target_module,
+                  const std::string& process, void* stub);
+
+  static void nop(void* place, size_t length);
+  static void nop(DWORD place, size_t length);
+
+  template <typename T> static void set(void* place, T value) {
+    DWORD old_protect;
+    VirtualProtect(place, sizeof(T), PAGE_EXECUTE_READWRITE, &old_protect);
+
+    *static_cast<T*>(place) = value;
+
+    VirtualProtect(place, sizeof(T), old_protect, &old_protect);
+    FlushInstructionCache(GetCurrentProcess(), place, sizeof(T));
   }
 
-  [[nodiscard]] void* get_original() const;
+  template <typename T> static void set(const DWORD place, T value) {
+    return set<T>(reinterpret_cast<void*>(place), value);
+  }
+
+  template <typename T, typename... Args>
+  static T invoke(size_t func, Args... args) {
+    return reinterpret_cast<T (*)(Args...)>(func)(args...);
+  }
+
+  template <typename T, typename... Args>
+  static T invoke(void* func, Args... args) {
+    return static_cast<T (*)(Args...)>(func)(args...);
+  }
 
 private:
-  void* place_{};
-  void* original_{};
+  bool initialized_;
+  bool installed_;
+
+  void* place_;
+  void* stub_;
+  void* original_;
+  char buffer_[5]{};
+  bool use_jump_;
+
+  DWORD protection_;
+
+  std::mutex state_mutex_;
 };
-
-void nop(void* place, size_t length);
-void nop(size_t place, size_t length);
-
-void copy(void* place, const void* data, size_t length);
-void copy(size_t place, const void* data, size_t length);
-
-bool is_relatively_far(const void* pointer, const void* data, int offset = 5);
-
-void call(void* pointer, void* data);
-void call(size_t pointer, void* data);
-void call(size_t pointer, size_t data);
-
-void jump(std::uintptr_t address, void* destination);
-
-void redirect_jump(void* pointer, void* data);
-void redirect_jump(size_t pointer, void* data);
-
-template <typename T> T extract(void* address) {
-  const auto data = static_cast<uint8_t*>(address);
-  const auto offset = *reinterpret_cast<int32_t*>(data);
-  return reinterpret_cast<T>(data + offset + 4);
-}
-
-template <typename T> static void set(void* place, T value) {
-  DWORD old_protect;
-  VirtualProtect(place, sizeof(T), PAGE_EXECUTE_READWRITE, &old_protect);
-
-  *static_cast<T*>(place) = value;
-
-  VirtualProtect(place, sizeof(T), old_protect, &old_protect);
-  FlushInstructionCache(GetCurrentProcess(), place, sizeof(T));
-}
-
-template <typename T> static void set(const size_t place, T value) {
-  return set<T>(reinterpret_cast<void*>(place), value);
-}
-
-template <typename T, typename... Args>
-static T invoke(size_t func, Args... args) {
-  return reinterpret_cast<T (*)(Args...)>(func)(args...);
-}
-
-template <typename T, typename... Args>
-static T invoke(void* func, Args... args) {
-  return static_cast<T (*)(Args...)>(func)(args...);
-}
-} // namespace utils::hook
+} // namespace utils

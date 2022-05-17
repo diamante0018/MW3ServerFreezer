@@ -6,8 +6,6 @@
 #include "key_catcher.hpp"
 
 namespace key_catcher {
-utils::hook::detour cl_key_event_hook;
-
 namespace {
 std::unordered_map<std::string, key_catcher::callback>& get_key_callbacks() {
   static std::unordered_map<std::string, key_catcher::callback> key_callbacks{};
@@ -37,16 +35,14 @@ void cl_key_event_stub(game::LocalClientNum_t local_client, int key_id,
                        int a3) {
   handle_key_event(local_client, key_id);
 
-  cl_key_event_hook.invoke<void>(local_client, key_id, a3);
+  utils::hook::invoke<void>(0x4CD840, local_client, key_id, a3);
 }
 
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    cl_key_event_hook.create(0x4CD840, &cl_key_event_stub);
+    utils::hook(0x53CC70, cl_key_event_stub, HOOK_CALL).install()->quick();
   }
-
-  void pre_destroy() override { cl_key_event_hook.clear(); }
 };
 } // namespace key_catcher
 

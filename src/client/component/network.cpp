@@ -53,7 +53,9 @@ public:
   void post_unpack() override {
     add_network_commands();
 
-    utils::hook::call(0x5B27E1, packet_interception_handler);
+    utils::hook(0x5B27E1, packet_interception_handler, HOOK_CALL)
+        .install()
+        ->quick();
   }
 
 private:

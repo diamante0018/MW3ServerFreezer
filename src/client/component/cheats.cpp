@@ -61,10 +61,10 @@ public:
     cl_EnableCheats = game::Dvar_RegisterBool(
         "cl_EnableCheats", false, game::DVAR_NONE, "Enable FoF wallhack");
 
-    utils::hook::jump(0x430561, draw_red_box_stub);
+    utils::hook(0x430561, draw_red_box_stub, HOOK_JUMP).install()->quick();
     utils::hook::nop(0x430566, 2);
 
-    utils::hook::jump(0x5AA524, blind_eye_check_stub);
+    utils::hook(0x5AA524, blind_eye_check_stub, HOOK_JUMP).install()->quick();
 
     add_cheat_commands();
   }

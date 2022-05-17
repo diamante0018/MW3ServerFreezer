@@ -144,9 +144,9 @@ public:
       }
     });
 
-    utils::hook::call(0x4E4A0D, cl_frame_stub);
-    utils::hook::call(0x5B54D2, r_end_frame_stub);
-    utils::hook::call(0x543B0E, main_frame_stub);
+    utils::hook(0x4E4A0D, cl_frame_stub, HOOK_CALL).install()->quick();
+    utils::hook(0x5B54D2, r_end_frame_stub, HOOK_CALL).install()->quick();
+    utils::hook(0x543B0E, main_frame_stub, HOOK_CALL).install()->quick();
   }
 
   void pre_destroy() override {

@@ -41,7 +41,7 @@ void console_print(std::string_view fmt, std::format_args&& args) {
       std::format("Debug:\n    {}\nFile: {}\nFunction: {}\n\n", msg,
                   location.file_name(), location.function_name());
 #else
-  const auto line = std::vformat(fmt, args);
+  const auto line = std::vformat(fmt, args) + "\n";
 #endif
 
   if (IsDebuggerPresent()) {

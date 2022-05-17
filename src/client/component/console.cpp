@@ -14,16 +14,6 @@ namespace {
 using message_queue = std::queue<std::string>;
 utils::concurrency::container<message_queue> messages;
 
-std::string format(va_list* ap, const char* message) {
-  static thread_local char buffer[0x1000];
-
-  const auto count = _vsnprintf_s(buffer, _TRUNCATE, message, *ap);
-
-  if (count < 0)
-    return {};
-  return {buffer};
-}
-
 void dispatch_message(const std::string& message) {
   messages.access([&message](message_queue& msgs) { msgs.emplace(message); });
 }

@@ -89,7 +89,7 @@ private:
     add("quit", game::Com_Quit_f);
     add("vstr", [](const params& params) {
       if (params.size() < 2) {
-        console::print("vstr <variablename> : execute a variable command");
+        console::info("vstr <variablename> : execute a variable command");
         return;
       }
 
@@ -97,12 +97,12 @@ private:
       const auto* dvar = game::Dvar_FindVar(dvar_name);
 
       if (dvar == nullptr) {
-        console::print("{} doesn't exist", dvar_name);
+        console::info("{} doesn't exist", dvar_name);
         return;
       }
       if (dvar->type != game::dvar_type::DVAR_TYPE_STRING &&
           dvar->type != game::dvar_type::DVAR_TYPE_ENUM) {
-        console::print("{} is not a string-based dvar\n", dvar->name);
+        console::info("{} is not a string-based dvar\n", dvar->name);
         return;
       }
 

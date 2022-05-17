@@ -74,13 +74,13 @@ private:
     key_catcher::on_key_press(
         "Z", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
           game::Dvar_SetBool(cl_EnableCheats, true);
-          console::print("Enabled cl_EnableCheats");
+          console::info("Enabled cl_EnableCheats");
         });
 
     key_catcher::on_key_press(
         "X", []([[maybe_unused]] const game::LocalClientNum_t& local_client) {
           game::Dvar_SetBool(cl_EnableCheats, false);
-          console::print("Disabled cl_EnableCheats");
+          console::info("Disabled cl_EnableCheats");
         });
 
     key_catcher::on_key_press(
@@ -88,7 +88,7 @@ private:
           const auto* cmd =
               utils::string::va("cmd mr %i 2 allies", *game::serverId);
           command::execute(cmd, true);
-          console::print("Executed: {}", cmd);
+          console::info("Executed: {}", cmd);
         });
 
     key_catcher::on_key_press(
@@ -96,7 +96,7 @@ private:
           const auto* cmd =
               utils::string::va("cmd mr %i -1 endround", *game::serverId);
           command::execute(cmd, true);
-          console::print("Executed: {}", cmd);
+          console::info("Executed: {}", cmd);
         });
   }
 };

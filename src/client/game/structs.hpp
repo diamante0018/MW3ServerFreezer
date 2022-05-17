@@ -184,6 +184,13 @@ enum dvar_type : std::int8_t {
   DVAR_TYPE_FLOAT_3_COLOR = 0x9,
 };
 
+enum class DvarSetSource {
+  DVAR_SOURCE_INTERNAL,
+  DVAR_SOURCE_EXTERNAL,
+  DVAR_SOURCE_SCRIPT,
+  DVAR_SOURCE_DEVGUI,
+};
+
 union DvarValue {
   bool enabled;
   int integer;
@@ -193,6 +200,8 @@ union DvarValue {
   const char* string;
   char color[4];
 };
+
+static_assert(sizeof(DvarValue) == 0x10);
 
 struct enum_limit {
   int stringCount;

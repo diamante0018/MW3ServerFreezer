@@ -88,4 +88,5 @@ WEAK symbol<HWND> s_wcd_hWnd{0x5A86330};
 WEAK symbol<int> serverId{0xFF5058};
 WEAK symbol<connstate_t> connectionState{0x1060214};
 WEAK symbol<ScreenPlacement> scrPlaceFullUnsafe{0x1337FC0};
+WEAK symbol<bool> isCheatOverride{0x8B4444};
 } // namespace game

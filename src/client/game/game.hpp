@@ -16,6 +16,7 @@ private:
 };
 
 ScreenPlacement* ScrPlace_GetUnsafeFullPlacement();
+void Dvar_SetVariant(dvar_t* dvar, DvarValue value, DvarSetSource source);
 } // namespace game
 
 #include "symbols.hpp"

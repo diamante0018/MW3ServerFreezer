@@ -146,7 +146,7 @@ private:
 HWND get_window() { return *reinterpret_cast<HWND*>(0x5A86330); }
 
 void print(std::string_view fmt, std::format_args&& args,
-           const std::source_location& loc) {
+           [[maybe_unused]] const std::source_location& loc) {
 #ifdef _DEBUG
   const auto msg = std::vformat(fmt, args);
   const auto line = std::format("Debug:\n    {}\nFile:    {}\nLine:    {}\n",

@@ -64,9 +64,8 @@ private:
   void merge_callbacks() {
     callbacks_.access([&](task_list& tasks) {
       new_callbacks_.access([&](task_list& new_tasks) {
-        tasks.insert(tasks.end(),
-                     std::move_iterator<task_list::iterator>(new_tasks.begin()),
-                     std::move_iterator<task_list::iterator>(new_tasks.end()));
+        tasks.insert(tasks.end(), std::move_iterator(new_tasks.begin()),
+                     std::move_iterator(new_tasks.end()));
         new_tasks = {};
       });
     });
@@ -137,7 +136,7 @@ unsigned int thread_id;
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    thread = utils::thread::create_named_thread("Async Scheduler", []() {
+    thread = utils::thread::create_named_thread("Async Scheduler", [] {
       while (!kill) {
         execute(pipeline::async);
         std::this_thread::sleep_for(10ms);

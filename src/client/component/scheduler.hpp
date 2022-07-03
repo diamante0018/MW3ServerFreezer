@@ -12,7 +12,7 @@ enum pipeline {
 static const bool cond_continue = false;
 static const bool cond_end = true;
 
-void clear_tasks(const pipeline type);
+void clear_tasks(pipeline type);
 
 void schedule(const std::function<bool()>& callback,
               pipeline type = pipeline::client,

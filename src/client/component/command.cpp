@@ -100,9 +100,9 @@ private:
         console::info("{} doesn't exist", dvar_name);
         return;
       }
-      if (dvar->type != game::dvar_type::DVAR_TYPE_STRING &&
-          dvar->type != game::dvar_type::DVAR_TYPE_ENUM) {
-        console::info("{} is not a string-based dvar\n", dvar->name);
+      if (dvar->type != game::DVAR_TYPE_STRING &&
+          dvar->type != game::DVAR_TYPE_ENUM) {
+        console::info("{} is not a string-based dvar", dvar->name);
         return;
       }
 

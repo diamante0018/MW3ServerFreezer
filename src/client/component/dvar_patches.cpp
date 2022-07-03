@@ -9,10 +9,10 @@ namespace dvar_patches {
 namespace {
 void dvar_set_from_string_by_name_stub(const char* dvar_name,
                                        const char* string) {
-  console::info("Server tried setting {} with value {}", dvar_name, string);
+  console::info("Server tried setting '{}' with value '{}'", dvar_name, string);
 }
 
-void dvar_override_cheat_protection_stub(bool /*a1*/) {
+void dvar_override_cheat_protection_stub(bool /*cheat_override*/) {
   *game::isCheatOverride = true;
 }
 } // namespace

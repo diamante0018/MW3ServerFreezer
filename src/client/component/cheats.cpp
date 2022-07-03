@@ -15,7 +15,7 @@ void __declspec(naked) draw_red_box_stub() {
   __asm {
     push eax
     mov eax, cl_EnableCheats
-    cmp byte ptr [eax + 12], 1
+    cmp byte ptr [eax + 0xC], 1
     pop eax
 
     je draw
@@ -35,7 +35,7 @@ void __declspec(naked) blind_eye_check_stub() {
   __asm {
     push eax
     mov eax, cl_EnableCheats
-    cmp byte ptr [eax + 12], 1
+    cmp byte ptr [eax + 0xC], 1
     pop eax
 
     je draw

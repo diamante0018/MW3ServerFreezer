@@ -75,7 +75,7 @@ private:
 
   void initialize() {
     this->console_thread_ =
-        utils::thread::create_named_thread("Console", [this]() {
+        utils::thread::create_named_thread("Console", [this] {
           if (!utils::flags::has_flag("noconsole")) {
             game::Sys_ShowConsole();
           }
@@ -92,7 +92,7 @@ private:
               }
 
               TranslateMessage(&msg);
-              DispatchMessage(&msg);
+              DispatchMessageA(&msg);
             } else {
               this->log_messages();
               std::this_thread::sleep_for(1ms);
@@ -145,17 +145,12 @@ private:
 
 HWND get_window() { return *reinterpret_cast<HWND*>(0x5A86330); }
 
-#ifdef _DEBUG
-void print(const std::source_location& location, std::string_view fmt,
-           std::format_args&& args) {
-#else
-void print(std::string_view fmt, std::format_args&& args) {
-#endif
+void print(std::string_view fmt, std::format_args&& args,
+           const std::source_location& loc) {
 #ifdef _DEBUG
   const auto msg = std::vformat(fmt, args);
-  const auto line =
-      std::format("Debug:\n    {}\nFile: {}\nFunction: {}\n\n", msg,
-                  location.file_name(), location.function_name());
+  const auto line = std::format("Debug:\n    {}\nFile:    {}\nLine:    {}\n",
+                                msg, loc.file_name(), loc.line());
 #else
   const auto line = std::vformat(fmt, args) + "\n";
 #endif

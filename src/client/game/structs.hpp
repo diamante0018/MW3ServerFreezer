@@ -9,6 +9,12 @@ typedef vec_t vec2_t[2];
 typedef vec_t vec3_t[3];
 typedef vec_t vec4_t[4];
 
+enum bdLogMessageType {
+  BD_LOG_INFO,
+  BD_LOG_WARNING,
+  BD_LOG_ERROR,
+};
+
 struct cmd_function_t {
   cmd_function_t* next;
   const char* name;
@@ -166,8 +172,8 @@ enum dvar_flags : std::uint16_t {
   DVAR_CODINFO = 1 << 3,
   DVAR_SCRIPTINFO = 1 << 4,
   DVAR_SERVERINFO = 1 << 10,
-  DVAR_WRITEPROTECTED = 1 << 11,
-  DVAR_READONLY = 1 << 13,
+  DVAR_INIT = 1 << 11,
+  DVAR_ROM = 1 << 13,
   DVAR_AUTOEXEC = 1 << 15,
 };
 

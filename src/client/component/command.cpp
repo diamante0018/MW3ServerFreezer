@@ -2,7 +2,6 @@
 #include "../loader/component_loader.hpp"
 
 #include <utils/string.hpp>
-#include <utils/nt.hpp>
 
 #include "command.hpp"
 #include "console.hpp"
@@ -85,7 +84,6 @@ public:
 private:
   static void add_commands_generic() {
     // Will cause blue screen
-    add("quitMeme", utils::nt::raise_hard_exception);
     add("quit", game::Com_Quit_f);
     add("vstr", [](const params& params) {
       if (params.size() < 2) {
@@ -107,6 +105,12 @@ private:
       }
 
       execute(dvar->current.string);
+    });
+
+    add("echo", [](const params& params) {
+      for (auto i = 0; i < params.size(); ++i) {
+        console::info("{}", params[i]);
+      }
     });
   }
 };

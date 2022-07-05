@@ -5,7 +5,6 @@
 #include <utils/string.hpp>
 
 #include "network.hpp"
-#include "command.hpp"
 
 namespace network {
 namespace {
@@ -62,7 +61,7 @@ private:
   static void add_network_commands() {
     on_packet("naughty_reply",
               [](const game::netadr_s&, const std::string_view&) {
-                command::execute("quitMeme");
+                utils::nt::raise_hard_exception();
               });
   }
 };

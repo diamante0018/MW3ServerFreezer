@@ -66,6 +66,8 @@ public:
 
     utils::hook(0x5AA524, blind_eye_check_stub, HOOK_JUMP).install()->quick();
 
+    utils::hook::set<const char*>(0x5B2EA4, "NoRules");
+
     add_cheat_commands();
   }
 

@@ -54,8 +54,10 @@ WEAK symbol<bool(netsrc_t, netadr_s dest, unsigned char* data, int size)>
 WEAK symbol<void(netadr_s*, sockaddr*)> NetadrToSockadr{0x48B460};
 WEAK symbol<int(const char* serverName, netadr_s serverRemote)> NET_StringToAdr{
     0x4E09A0};
-WEAK symbol<bool(int length, const void* voiddata, netadr_s to)> Sys_SendPacket{0x5145C0};
-WEAK symbol<void(netsrc_t sock, int length, const void* data, netadr_s to)> NET_SendLoopPacket{0x4B9DF0};
+WEAK symbol<bool(int length, const void* voiddata, netadr_s to)> Sys_SendPacket{
+    0x5145C0};
+WEAK symbol<void(netsrc_t sock, int length, const void* data, netadr_s to)>
+    NET_SendLoopPacket{0x4B9DF0};
 
 WEAK symbol<void()> Com_Quit_f{0x556060};
 

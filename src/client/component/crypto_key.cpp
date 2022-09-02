@@ -15,7 +15,6 @@ bool load_key(utils::cryptography::ecc::key& key) {
 
   key.deserialize(data);
   if (!key.is_valid()) {
-    console::info("Loaded key is invalid!");
     return false;
   }
 
@@ -32,14 +31,12 @@ utils::cryptography::ecc::key generate_key() {
     throw std::runtime_error("Failed to write server key!");
   }
 
-  console::info("Generated cryptographic key: {}", key.get_hash());
   return key;
 }
 
 utils::cryptography::ecc::key load_or_generate_key() {
   utils::cryptography::ecc::key key{};
   if (load_key(key)) {
-    console::info("Loaded cryptographic key: {}", key.get_hash());
     return key;
   }
 
@@ -51,6 +48,7 @@ utils::cryptography::ecc::key get_key_internal() {
   if (!utils::io::write_file("./public.key", key.get_public_key())) {
     console::info("Failed to write public key!");
   }
+
   return key;
 }
 } // namespace

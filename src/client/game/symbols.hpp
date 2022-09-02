@@ -54,7 +54,9 @@ WEAK symbol<bool(netsrc_t, netadr_s dest, unsigned char* data, int size)>
 WEAK symbol<void(netadr_s*, sockaddr*)> NetadrToSockadr{0x48B460};
 WEAK symbol<int(const char* serverName, netadr_s serverRemote)> NET_StringToAdr{
     0x4E09A0};
-WEAK symbol<SOCKET> query_socket{0x5A861EC};
+WEAK symbol<bool(int length, const void* voiddata, netadr_s to)> Sys_SendPacket{0x5145C0};
+WEAK symbol<void(netsrc_t sock, int length, const void* data, netadr_s to)> NET_SendLoopPacket{0x4B9DF0};
+
 WEAK symbol<void()> Com_Quit_f{0x556060};
 
 WEAK symbol<void(const msg_t*, unsigned char*, int)> MSG_Init{0x40E030};
@@ -73,11 +75,6 @@ WEAK symbol<int(unsigned __int64, const void*, unsigned int)>
 
 WEAK symbol<XAssetHeader(int type, const char* name, int allowCreateDefault)>
     DB_FindXAssetHeader{0x4B25C0};
-
-WEAK symbol<void(const char* text, int maxChars, Font_s* font, float x, float y,
-                 float xScale, float yScale, float rotation, const float* color,
-                 int style)>
-    R_AddCmdDrawText{0x42C970};
 
 // Variables
 WEAK symbol<CmdArgs> cmd_args{0x1C96850};

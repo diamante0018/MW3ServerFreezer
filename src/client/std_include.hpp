@@ -4,8 +4,10 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#include <WinSock2.h>
 #include <Windows.h>
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+
 #include <corecrt_io.h>
 #include <fcntl.h>
 
@@ -15,10 +17,12 @@
 #include <iostream>
 #include <mutex>
 #include <string>
+#include <string_view>
 #include <source_location>
 #include <queue>
 
 #pragma comment(lib, "ntdll.lib")
+#pragma comment(lib, "ws2_32.lib")
 
 using namespace std::literals;
 

@@ -69,7 +69,7 @@ struct netadr_s {
   unsigned int addrHandleIndex;
 };
 
-static_assert(sizeof(netadr_s) == 24);
+static_assert(sizeof(netadr_s) == 0x18);
 
 typedef enum {
   ERR_FATAL = 0x0,

@@ -1,5 +1,4 @@
-﻿
----
+﻿---
 Language: Cpp
 BasedOnStyle: LLVM
 DerivePointerAlignment: false
@@ -10,3 +9,5 @@ SortIncludes: false
 IncludeBlocks: Preserve
 
 ---
+Language: Proto
+BasedOnStyle: Google

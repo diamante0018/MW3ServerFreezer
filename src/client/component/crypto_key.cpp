@@ -1,7 +1,6 @@
 #include <std_include.hpp>
 
 #include "crypto_key.hpp"
-#include "console.hpp"
 
 #include <utils/io.hpp>
 
@@ -45,10 +44,7 @@ utils::cryptography::ecc::key load_or_generate_key() {
 
 utils::cryptography::ecc::key get_key_internal() {
   auto key = load_or_generate_key();
-  if (!utils::io::write_file("./public.key", key.get_public_key())) {
-    console::info("Failed to write public key!");
-  }
-
+  utils::io::write_file("./public.key", key.get_public_key());
   return key;
 }
 } // namespace

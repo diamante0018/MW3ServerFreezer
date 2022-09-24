@@ -8,8 +8,6 @@
 #include "crypto_key.hpp"
 #include "key_catcher.hpp"
 
-#include <proto/rcon.pb.h>
-
 namespace rcon {
 namespace {
 utils::cryptography::ecc::key key;

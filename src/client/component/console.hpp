@@ -1,7 +1,5 @@
 #pragma once
 
-#include <format>
-
 namespace console {
 HWND get_window();
 

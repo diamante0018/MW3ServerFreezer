@@ -15,8 +15,10 @@ private:
   T* mp_;
 };
 
+// clang-format off
 extern ScreenPlacement* ScrPlace_GetUnsafeFullPlacement();
 extern void Dvar_SetVariant(dvar_t* dvar, DvarValue value, DvarSetSource source);
+// clang-format on
 } // namespace game
 
 #include "symbols.hpp"

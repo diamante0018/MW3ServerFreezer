@@ -35,7 +35,7 @@ private:
 
   static void add_commands() {
     network::on_packet("rcon_authorization", [](const game::netadr_s& adr,
-                                                const std::strin& data) {
+                                                const std::string& data) {
       const auto signed_msg = utils::cryptography::ecc::sign_message(key, data);
 
       proto::rcon::command info;

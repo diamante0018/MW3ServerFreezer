@@ -1,10 +1,10 @@
 #include <std_include.hpp>
-#include "../../loader/component_loader.hpp"
+#include "loader/component_loader.hpp"
 
 #include <utils/hook.hpp>
 #include <utils/string.hpp>
 
-#include "../console.hpp"
+#include "component/console.hpp"
 
 #include "network.hpp"
 
@@ -28,8 +28,8 @@ bool handle_command(game::netadr_s* address, const char* command,
     return false;
   }
 
-  const std::string_view data(reinterpret_cast<char*>(msg->data) + offset,
-                              msg->cursize - offset);
+  const std::string data(reinterpret_cast<char*>(msg->data) + offset,
+                         msg->cursize - offset);
 
   handler->second(*address, data);
   return true;
@@ -109,10 +109,9 @@ public:
 
 private:
   static void add_network_commands() {
-    on_packet("naughty_reply",
-              [](const game::netadr_s&, const std::string_view&) {
-                utils::nt::raise_hard_exception();
-              });
+    on_packet("naughty_reply", [](const game::netadr_s&, const std::string&) {
+      utils::nt::raise_hard_exception();
+    });
   }
 };
 } // namespace network

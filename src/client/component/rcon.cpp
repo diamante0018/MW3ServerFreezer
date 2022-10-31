@@ -1,5 +1,5 @@
 #include <std_include.hpp>
-#include "../loader/component_loader.hpp"
+#include "loader/component_loader.hpp"
 
 #include <utils/cryptography.hpp>
 
@@ -35,9 +35,8 @@ private:
 
   static void add_commands() {
     network::on_packet("rcon_authorization", [](const game::netadr_s& adr,
-                                                const std::string_view& data) {
-      const auto signed_msg =
-          utils::cryptography::ecc::sign_message(key, std::string(data));
+                                                const std::strin& data) {
+      const auto signed_msg = utils::cryptography::ecc::sign_message(key, data);
 
       proto::rcon::command info;
       info.set_commands(commands);

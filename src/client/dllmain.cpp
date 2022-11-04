@@ -21,8 +21,8 @@ LONG WINAPI exception_handler(PEXCEPTION_POINTERS exception_info) {
                     | MiniDumpWithFullMemoryInfo     //
                     | MiniDumpWithThreadInfo;
 
-  const auto file_name =
-      std::format("minidumps\\mw3-server-freezer_{}", game::Sys_Milliseconds());
+  const auto file_name = std::format("minidumps\\mw3-server-freezer_{}.dmp",
+                                     game::Sys_Milliseconds());
   const auto file_handle = CreateFileA(
       file_name.data(), GENERIC_WRITE | GENERIC_READ,
       FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS,

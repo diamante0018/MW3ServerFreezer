@@ -1,4 +1,4 @@
-[![license](https://img.shields.io/github/license/diamante0018/MW3ServerFreezer.svg)
+![license](https://img.shields.io/github/license/diamante0018/MW3ServerFreezer.svg)
 [![build](https://github.com/diamante0018/MW3ServerFreezer/workflows/Build/badge.svg)](https://github.com/diamante0018/MW3ServerFreezer/actions)
 
 # MW3ServerFreezer

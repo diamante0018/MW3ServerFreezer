@@ -31,7 +31,7 @@ std::vector<std::string> split(const std::string& s, const char delim) {
   return elems;
 }
 
-std::string to_lower(const std::string text) {
+std::string to_lower(const std::string& text) {
   std::string result;
   std::ranges::transform(text, std::back_inserter(result),
                          [](const unsigned char input) {
@@ -41,7 +41,7 @@ std::string to_lower(const std::string text) {
   return text;
 }
 
-std::string to_upper(const std::string text) {
+std::string to_upper(const std::string& text) {
   std::string result;
   std::ranges::transform(text, std::back_inserter(result),
                          [](const unsigned char input) {

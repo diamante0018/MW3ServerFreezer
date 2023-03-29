@@ -9,6 +9,9 @@
 #include "console.hpp"
 #include "command.hpp"
 
+#include <corecrt_io.h>
+#include <fcntl.h>
+
 namespace console {
 namespace {
 using message_queue = std::queue<std::string>;

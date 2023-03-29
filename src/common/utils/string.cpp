@@ -7,7 +7,7 @@
 
 namespace utils::string {
 const char* va(const char* fmt, ...) {
-  static thread_local va_provider<8, 256> provider;
+  static thread_local va_provider<8, 1024> provider;
 
   va_list ap;
   va_start(ap, fmt);

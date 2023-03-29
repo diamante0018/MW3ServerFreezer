@@ -30,7 +30,7 @@ void memory::allocator::free(const void* data) {
   this->free(const_cast<void*>(data));
 }
 
-void* memory::allocator::allocate(const size_t length) {
+void* memory::allocator::allocate(const std::size_t length) {
   std::lock_guard _(this->mutex_);
 
   const auto data = memory::allocate(length);
@@ -48,7 +48,9 @@ char* memory::allocator::duplicate_string(const std::string& string) {
   return data;
 }
 
-void* memory::allocate(const size_t length) { return std::calloc(length, 1); }
+void* memory::allocate(const std::size_t length) {
+  return std::calloc(1, length);
+}
 
 char* memory::duplicate_string(const std::string& string) {
   const auto new_string = allocate_array<char>(string.size() + 1);
@@ -60,10 +62,10 @@ void memory::free(void* data) { std::free(data); }
 
 void memory::free(const void* data) { free(const_cast<void*>(data)); }
 
-bool memory::is_set(const void* mem, const char chr, const size_t length) {
+bool memory::is_set(const void* mem, const char chr, const std::size_t length) {
   const auto mem_arr = static_cast<const char*>(mem);
 
-  for (size_t i = 0; i < length; ++i) {
+  for (std::size_t i = 0; i < length; ++i) {
     if (mem_arr[i] != chr) {
       return false;
     }

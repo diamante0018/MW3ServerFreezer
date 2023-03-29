@@ -51,6 +51,7 @@ BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD ul_reason_for_call,
 ) {
   if (ul_reason_for_call == DLL_PROCESS_ATTACH) {
     AddVectoredExceptionHandler(0, exception_handler);
+    SetProcessDEPPolicy(PROCESS_DEP_ENABLE);
 
     std::srand(std::uint32_t(time(nullptr)));
 

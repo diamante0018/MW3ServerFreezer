@@ -8,21 +8,20 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
-#include <corecrt_io.h>
-#include <fcntl.h>
-
 #include <DbgHelp.h>
 
 #include <algorithm>
 #include <cassert>
+#include <cctype>
+#include <cstring>
+#include <format>
 #include <functional>
 #include <iostream>
 #include <mutex>
+#include <queue>
+#include <source_location>
 #include <string>
 #include <string_view>
-#include <source_location>
-#include <queue>
-#include <format>
 
 #pragma comment(lib, "ntdll.lib")
 #pragma comment(lib, "ws2_32.lib")

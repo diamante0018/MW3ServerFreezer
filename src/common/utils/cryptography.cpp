@@ -2,6 +2,8 @@
 #include "cryptography.hpp"
 #include "nt.hpp"
 
+#include <random>
+
 #include <gsl/gsl>
 
 #undef max
@@ -94,11 +96,17 @@ private:
 
     int i[4]; // uninitialized data
     auto* i_ptr = &i;
-    this->add_entropy(reinterpret_cast<std::uint8_t*>(&i), sizeof(i));
-    this->add_entropy(reinterpret_cast<std::uint8_t*>(&i_ptr), sizeof(i_ptr));
+    this->add_entropy(&i, sizeof(i));
+    this->add_entropy(&i_ptr, sizeof(i_ptr));
 
-    auto t = time(nullptr);
-    this->add_entropy(reinterpret_cast<std::uint8_t*>(&t), sizeof(t));
+    auto t = std::time(nullptr);
+    this->add_entropy(&t, sizeof(t));
+
+    std::random_device rd{};
+    for (auto j = 0; j < 4; ++j) {
+      const auto x = rd();
+      this->add_entropy(&x, sizeof(x));
+    }
   }
 };
 
@@ -225,7 +233,9 @@ std::string ecc::sign_message(const key& key, const std::string& message) {
   std::uint8_t buffer[512];
   unsigned long length = sizeof(buffer);
 
-  ecc_sign_hash(cs(message.data()), ul(message.size()), buffer, &length,
+  const auto hash = sha512::compute(message);
+
+  ecc_sign_hash(cs(hash.data()), ul(hash.size()), buffer, &length,
                 prng_.get_state(), prng_.get_id(), &key.get());
 
   return {cs(buffer), length};
@@ -236,9 +246,11 @@ bool ecc::verify_message(const key& key, const std::string& message,
   if (!key.is_valid())
     return false;
 
+  const auto hash = sha512::compute(message);
+
   auto result = 0;
   return (ecc_verify_hash(cs(signature.data()), ul(signature.size()),
-                          cs(message.data()), ul(message.size()), &result,
+                          cs(hash.data()), ul(hash.size()), &result,
                           &key.get()) == CRYPT_OK &&
           result != 0);
 }
@@ -377,7 +389,7 @@ std::string tiger::compute(const uint8_t* data, const size_t length,
   if (!hex)
     return hash;
 
-  return string::dump_hex(hash, "");
+  return string::dump_hex(hash, {});
 }
 
 std::string aes::encrypt(const std::string& data, const std::string& iv,
@@ -445,7 +457,7 @@ std::string sha1::compute(const std::uint8_t* data, const std::size_t length,
   if (!hex)
     return hash;
 
-  return string::dump_hex(hash, "");
+  return string::dump_hex(hash, {});
 }
 
 std::string sha256::compute(const std::string& data, const bool hex) {
@@ -465,7 +477,7 @@ std::string sha256::compute(const std::uint8_t* data, const std::size_t length,
   if (!hex)
     return hash;
 
-  return string::dump_hex(hash, "");
+  return string::dump_hex(hash, {});
 }
 
 std::string sha512::compute(const std::string& data, const bool hex) {
@@ -485,7 +497,7 @@ std::string sha512::compute(const std::uint8_t* data, const std::size_t length,
   if (!hex)
     return hash;
 
-  return string::dump_hex(hash, "");
+  return string::dump_hex(hash, {});
 }
 
 std::string base64::encode(const std::uint8_t* data, const std::size_t len) {
@@ -502,7 +514,7 @@ std::string base64::encode(const std::uint8_t* data, const std::size_t len) {
 }
 
 std::string base64::encode(const std::string& data) {
-  return base64::encode(cs(data.data()), data.size());
+  return encode(cs(data.data()), data.size());
 }
 
 std::string base64::decode(const std::string& data) {
@@ -539,15 +551,15 @@ unsigned int jenkins_one_at_a_time::compute(const char* key,
 
 std::uint32_t random::get_integer() {
   std::uint32_t result;
-  random::get_data(&result, sizeof(result));
+  get_data(&result, sizeof(result));
   return result;
 }
 
 std::string random::get_challenge() {
   std::string result;
   result.resize(sizeof(std::uint32_t));
-  random::get_data(result.data(), result.size());
-  return string::dump_hex(result, "");
+  get_data(result.data(), result.size());
+  return string::dump_hex(result, {});
 }
 
 void random::get_data(void* data, const std::size_t size) {

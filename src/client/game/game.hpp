@@ -16,6 +16,8 @@ private:
 };
 
 // clang-format off
+constexpr auto MAX_CLIENTS = 18;
+
 extern ScreenPlacement* ScrPlace_GetUnsafeFullPlacement();
 extern void Dvar_SetVariant(dvar_t* dvar, DvarValue value, DvarSetSource source);
 // clang-format on

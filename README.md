@@ -13,7 +13,7 @@ This software has been created purely for the purposes of academic research. It 
 This software is a proof of concept for a vulnerability that is patched. You can't harm anyone with it if you use it on Pluto (If you were to update the addresses for the 1.9 patch of the game).
 You also can't use this vulnerability on Tekno as it was fixed in 2021 (2.0.6 version of their client).
 If you think your server is vulnerable you should seek help in the appropriate discord server or forum of the client you use.
-The exploit is documented in [exploit.cpp](https://github.com/diamante0018/MW3ServerFreezer/blob/main/src/client/component/exploit.cpp)
+The exploit is documented in [exploit.cpp](src/client/component/exploit.cpp)
 
 ## Update
 
@@ -23,7 +23,7 @@ The patch made by Discord user "Zero Bytes" made the Netchan_Process stub return
 The return value is completely non-sensical and allows for the execution of SV_PacketEvent to continue.
 
 ```c
-int __cdecl Netchan_Process_stub(netchan_t* a1, msg_t* a2)
+int __cdecl Netchan_Process_Stub(netchan_t* a1, msg_t* a2)
 {
   if ( a2->cursize <= 14 || !a2->data[14] )
     return Netchan_Process_Original(a1, a2);
@@ -37,9 +37,10 @@ int __cdecl Netchan_Process_stub(netchan_t* a1, msg_t* a2)
 ```
 
 Later revisions of the Tekno gods server DLL seem to have changed this behaviour and now the stub returns `0` when a suspicious packet is detected.
+The exploit was finally fixed.
 
 ```c
-int __cdecl Netchan_Process_stub(netchan_t* a1, msg_t* a2)
+int __cdecl Netchan_Process_Stub(netchan_t* a1, msg_t* a2)
 {
   if ( a2->cursize <= 14 || !a2->data[14] )
     return Netchan_Process_Original(a1, a2);
@@ -54,9 +55,14 @@ int __cdecl Netchan_Process_stub(netchan_t* a1, msg_t* a2)
 
 ## Compile from source
 
-- Clone the Git repo. Do NOT download it as ZIP, that won't work.
-- Update the submodules and run `premake5 vs2022` or simply use the delivered `generate.bat`.
-- Build via solution file in `build\mw3-server-freezer.sln`.
+- Install [Visual Studio 2022][vs-link] and enable `Desktop development with C++`
+- Install [Premake5][premake5-link] and add it to your system PATH
+- Clone this repository using [Git][git-link]
+- Update the submodules using ``git submodule update --init --recursive``
+- Run Premake with the option ``premake5 vs2022`` (Visual Studio 2022). No other build systems are supported.
+- Build the project via the solution file in `build\mw3-server-freezer.sln`.
+
+Only the Win32 platform is supported. Do not attempt to build for Windows ARM 64 or x64.
 
 ## Commands
 
@@ -68,3 +74,7 @@ List of hard-coded key binds:
 ## Credits
 
 - QUADFOST posted the original exploit on a popular gaming forum. I wrote this software implementing the exploit.
+
+[vs-link]:                https://visualstudio.microsoft.com/vs
+[premake5-link]:          https://premake.github.io/download
+[git-link]:               https://git-scm.com

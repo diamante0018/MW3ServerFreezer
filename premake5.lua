@@ -36,7 +36,7 @@ location "./build"
 objdir "%{wks.location}/obj"
 targetdir "%{wks.location}/bin/%{cfg.platform}/%{cfg.buildcfg}"
 
-configurations {"Debug", "Release"}
+configurations {"debug", "release"}
 
 language "C++"
 cppdialect "C++20"
@@ -57,15 +57,15 @@ filter "platforms:Win*"
 	defines {"_WINDOWS", "WIN32"}
 filter {}
 
-filter "configurations:Release"
+filter "configurations:release"
 	optimize "Size"
 	defines {"NDEBUG"}
 	flags {"FatalCompileWarnings"}
 	buildoptions {"/GL"}
-	linkoptions { "/IGNORE:4702", "/LTCG" }
+	linkoptions {"/IGNORE:4702", "/LTCG"}
 filter {}
 
-filter "configurations:Debug"
+filter "configurations:debug"
 	optimize "Debug"
 	defines {"DEBUG", "_DEBUG"}
 filter {}
@@ -91,7 +91,7 @@ targetname "mw3-server-freezer"
 pchheader "std_include.hpp"
 pchsource "src/client/std_include.cpp"
 
-linkoptions {"/IGNORE:4254", "/PDBCompress"}
+linkoptions {"/PDBCompress"}
 
 files {"./src/client/**.hpp", "./src/client/**.cpp"}
 

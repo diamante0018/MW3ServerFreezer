@@ -25,6 +25,9 @@ jobs:
         configuration:
           - debug
           - release
+        toolset:
+          - msc
+          - clang
     steps:
       - name: Check out files
         uses: actions/checkout@main
@@ -43,13 +46,13 @@ jobs:
           version: ${{ env.PREMAKE_VERSION }}
 
       - name: Generate project files
-        run: premake5 vs2022
+        run: premake5 --cc=${{matrix.toolset}} vs2022
 
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master
 
       - name: Build ${{matrix.configuration}} binaries
-        run: msbuild /m /v:minimal /p:Configuration=${{matrix.configuration}} /p:Platform=Win32 build/mw3-server-freezer.sln
+        run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=Win32 build/mw3-server-freezer.sln
 
       - name: Upload ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@main

@@ -62,7 +62,7 @@ filter "configurations:release"
 	defines {"NDEBUG"}
 	flags {"FatalCompileWarnings"}
 
-	filter "action:msc"
+	filter "toolset:msc*"
 		buildoptions "/GL"
 		linkoptions {"/IGNORE:4702", "/LTCG"}
 	filter {}

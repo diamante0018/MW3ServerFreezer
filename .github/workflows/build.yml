@@ -62,7 +62,7 @@ jobs:
       - name: Upload ${{matrix.configuration}} binaries
         uses: actions/upload-artifact@main
         with:
-          name: ${{matrix.configuration}} binaries
+          name: windows-${{matrix.compiler}}-${{matrix.configuration}}
           path: |
             build/bin/Win32/${{matrix.configuration}}/mw3-server-freezer.dll
             build/bin/Win32/${{matrix.configuration}}/mw3-server-freezer.pdb

@@ -20,9 +20,8 @@ using task_list = std::vector<task>;
 class task_pipeline {
 public:
   void add(task&& task) {
-    new_callbacks_.access([&task, this](task_list& tasks) {
-      tasks.emplace_back(std::move(task));
-    });
+    new_callbacks_.access(
+        [&task](task_list& tasks) { tasks.emplace_back(std::move(task)); });
   }
 
   void clear() {
@@ -143,9 +142,15 @@ public:
       }
     });
 
-    utils::hook(0x4E4A0D, cl_frame_stub, HOOK_CALL).install()->quick();
-    utils::hook(0x5B54D2, r_end_frame_stub, HOOK_CALL).install()->quick();
-    utils::hook(0x543B0E, main_frame_stub, HOOK_CALL).install()->quick();
+    utils::hook(0x4E4A0D, HOOK_CAST(cl_frame_stub), HOOK_CALL)
+        .install()
+        ->quick();
+    utils::hook(0x5B54D2, HOOK_CAST(r_end_frame_stub), HOOK_CALL)
+        .install() // hook*
+        ->quick();
+    utils::hook(0x543B0E, HOOK_CAST(main_frame_stub), HOOK_CALL)
+        .install() // hook*
+        ->quick();
   }
 
   void pre_destroy() override {

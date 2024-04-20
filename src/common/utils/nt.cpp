@@ -191,14 +191,6 @@ void** library::get_iat_entry(const std::string& module_name,
   return nullptr;
 }
 
-void raise_hard_exception() {
-  int data = false;
-  const library ntdll("ntdll.dll");
-  ntdll.invoke_pascal<void>("RtlAdjustPrivilege", 19, true, false, &data);
-  ntdll.invoke_pascal<void>("NtRaiseHardError", 0xC000007B, 0, nullptr, nullptr,
-                            6, &data);
-}
-
 std::string load_resource(const int id) {
   auto* const res = FindResource(library(), MAKEINTRESOURCE(id), RT_RCDATA);
   if (!res)

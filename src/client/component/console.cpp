@@ -42,7 +42,7 @@ public:
   }
 
   void post_unpack() override {
-    utils::hook(0x446930, append_text, HOOK_JUMP).install()->quick();
+    utils::hook(0x446930, HOOK_CAST(append_text), HOOK_JUMP).install()->quick();
 
     this->initialize();
   }

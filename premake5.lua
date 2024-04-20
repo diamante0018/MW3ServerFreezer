@@ -61,8 +61,15 @@ filter "configurations:release"
 	optimize "Size"
 	defines {"NDEBUG"}
 	flags {"FatalCompileWarnings"}
-	buildoptions {"/GL"}
-	linkoptions {"/IGNORE:4702", "/LTCG"}
+
+	filter "action:msc"
+		buildoptions "/GL"
+		linkoptions {"/IGNORE:4702", "/LTCG"}
+	filter {}
+
+	filter "toolset:not msc*"
+		buildoptions "-Wno-unused-parameter"
+	filter {}
 filter {}
 
 filter "configurations:debug"
@@ -90,8 +97,6 @@ targetname "mw3-server-freezer"
 
 pchheader "std_include.hpp"
 pchsource "src/client/std_include.cpp"
-
-linkoptions {"/PDBCompress"}
 
 files {"./src/client/**.hpp", "./src/client/**.cpp"}
 

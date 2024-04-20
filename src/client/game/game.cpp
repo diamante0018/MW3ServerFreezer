@@ -5,10 +5,9 @@ ScreenPlacement* ScrPlace_GetUnsafeFullPlacement() {
   return scrPlaceFullUnsafe;
 }
 
+static DWORD Dvar_SetVariant_t = 0x649170;
 void __declspec(naked) Dvar_SetVariant(dvar_t* /*dvar*/, DvarValue /*value*/,
                                        DvarSetSource /*source*/) {
-  static DWORD func = 0x649170;
-
   __asm {
     pushad
 
@@ -18,7 +17,7 @@ void __declspec(naked) Dvar_SetVariant(dvar_t* /*dvar*/, DvarValue /*value*/,
     push [esp + 0x20 + 0x18] // value
     push [esp + 0x20 + 0x18] // value
     push [esp + 0x20 + 0x18] // value
-    call func
+    call Dvar_SetVariant_t
     add esp, 0x14
 
     popad

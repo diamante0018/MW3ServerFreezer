@@ -45,11 +45,11 @@ public:
   void post_start() override { remove_tekno_hooks(); }
 
   void post_unpack() override {
-    utils::hook(0x4E3D42, msg_read_bits_compress_check_sv, HOOK_CALL)
-        .install()
+    utils::hook(0x4E3D42, HOOK_CAST(msg_read_bits_compress_check_sv), HOOK_CALL)
+        .install() // hook*
         ->quick();
-    utils::hook(0x4A9F56, msg_read_bits_compress_check_cl, HOOK_CALL)
-        .install()
+    utils::hook(0x4A9F56, HOOK_CAST(msg_read_bits_compress_check_cl), HOOK_CALL)
+        .install() // hook*
         ->quick();
   }
 

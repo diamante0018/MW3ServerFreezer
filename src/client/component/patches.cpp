@@ -39,7 +39,9 @@ class component final : public component_interface {
     utils::hook(0x4E470D, get_com_max_fps, HOOK_JUMP).install()->quick();
     utils::hook::nop(0x4E4712, 4);
 
-    utils::hook(0x6EA960, bd_log_message_stub, HOOK_JUMP).install()->quick();
+    utils::hook(0x6EA960, HOOK_CAST(bd_log_message_stub), HOOK_JUMP)
+        .install() // hook*
+        ->quick();
 
     // Another meme
     static const auto* my_cg_fov = game::Dvar_RegisterFloat(

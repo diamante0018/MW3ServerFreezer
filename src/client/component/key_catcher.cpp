@@ -41,7 +41,9 @@ void cl_key_event_stub(game::LocalClientNum_t local_client, int key_id,
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    utils::hook(0x53CC70, cl_key_event_stub, HOOK_CALL).install()->quick();
+    utils::hook(0x53CC70, HOOK_CAST(cl_key_event_stub), HOOK_CALL)
+        .install() // hook*
+        ->quick();
   }
 };
 } // namespace key_catcher

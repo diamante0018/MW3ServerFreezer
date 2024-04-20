@@ -50,39 +50,14 @@ public:
 
   template <typename T> T get_proc(const std::string& process) const {
     if (!this->is_valid())
-      T{};
+      return T{};
     return reinterpret_cast<T>(GetProcAddress(this->module_, process.data()));
   }
 
   template <typename T> std::function<T> get(const std::string& process) const {
     if (!this->is_valid())
       return std::function<T>();
-    return static_cast<T*>(this->get_proc<void*>(process));
-  }
-
-  template <typename T, typename... Args>
-  T invoke(const std::string& process, Args... args) const {
-    auto method = this->get<T(__cdecl)(Args...)>(process);
-    if (method)
-      return method(args...);
-    return T();
-  }
-
-  template <typename T, typename... Args>
-  T invoke_pascal(const std::string& process, Args... args) const {
-    auto method = this->get<T(__stdcall)(Args...)>(process);
-    if (method)
-      return method(args...);
-    return T();
-  }
-
-  template <typename T, typename... Args>
-  T invoke_this(const std::string& process, void* this_ptr,
-                Args... args) const {
-    auto method = this->get<T(__thiscall)(void*, Args...)>(this_ptr, process);
-    if (method)
-      return method(args...);
-    return T();
+    return reinterpret_cast<T*>(this->get_proc<void*>(process));
   }
 
   std::vector<PIMAGE_SECTION_HEADER> get_section_headers() const;
@@ -98,9 +73,8 @@ private:
   HMODULE module_;
 };
 
-__declspec(noreturn) void raise_hard_exception();
 std::string load_resource(int id);
 
 void relaunch_self();
-__declspec(noreturn) void terminate(uint32_t code = 0);
+void terminate(uint32_t code = 0);
 } // namespace utils::nt

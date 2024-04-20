@@ -6,7 +6,7 @@
 #include "command.hpp"
 #include "console.hpp"
 
-constexpr auto CMD_MAX_NESTING = 8;
+[[maybe_unused]] constexpr auto CMD_MAX_NESTING = 8;
 
 namespace command {
 std::unordered_map<std::string, std::function<void(params&)>> handlers;

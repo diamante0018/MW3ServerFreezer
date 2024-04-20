@@ -102,17 +102,13 @@ public:
   void post_unpack() override {
     add_network_commands();
 
-    utils::hook(0x5B27E1, packet_interception_handler, HOOK_CALL)
-        .install()
+    utils::hook(0x5B27E1, HOOK_CAST(packet_interception_handler), HOOK_CALL)
+        .install() // hook*
         ->quick();
   }
 
 private:
-  static void add_network_commands() {
-    on_packet("naughty_reply", [](const game::netadr_s&, const std::string&) {
-      utils::nt::raise_hard_exception();
-    });
-  }
+  static void add_network_commands() {}
 };
 } // namespace network
 

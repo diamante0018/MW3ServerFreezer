@@ -5,6 +5,8 @@
 #define HOOK_JUMP true
 #define HOOK_CALL false
 
+#define HOOK_CAST(f) reinterpret_cast<void*>(f)
+
 namespace utils {
 class hook final {
 public:

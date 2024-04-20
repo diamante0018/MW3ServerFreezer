@@ -20,13 +20,15 @@ void dvar_override_cheat_protection_stub(bool /*cheat_override*/) {
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    utils::hook(0x59C0EF, dvar_set_from_string_by_name_stub, HOOK_CALL)
-        .install()
+    utils::hook(0x59C0EF, HOOK_CAST(dvar_set_from_string_by_name_stub),
+                HOOK_CALL)
+        .install() // hook*
         ->quick();
 
     *game::isCheatOverride = true;
-    utils::hook(0x482CC0, dvar_override_cheat_protection_stub, HOOK_JUMP)
-        .install()
+    utils::hook(0x482CC0, HOOK_CAST(dvar_override_cheat_protection_stub),
+                HOOK_JUMP)
+        .install() // hook*
         ->quick();
 
     // Remove read/write protection

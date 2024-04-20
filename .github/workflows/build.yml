@@ -25,8 +25,8 @@ jobs:
         configuration:
           - debug
           - release
-        toolset:
-          - msc
+        compiler:
+          - msvc
           - clang
     steps:
       - name: Check out files
@@ -45,8 +45,13 @@ jobs:
         with:
           version: ${{ env.PREMAKE_VERSION }}
 
-      - name: Generate project files
-        run: premake5 --cc=${{matrix.toolset}} vs2022
+      - name: Generate project files (clang)
+        if: matrix.compiler == 'clang'
+        run: premake5 --cc=${{matrix.compiler}} vs2022
+
+      - name: Generate project files (msvc)
+        if: matrix.compiler == 'msvc'
+        run: premake5 vs2022
 
       - name: Set up problem matching
         uses: ammaraskar/msvc-problem-matcher@master

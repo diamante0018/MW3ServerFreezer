@@ -19,8 +19,8 @@ public:
 
   template <typename T> static T* get() {
     for (const auto& component_ : get_components()) {
-      if (typeid(*component_.get()) == typeid(T)) {
-        return reinterpret_cast<T*>(component_.get());
+      if (auto c = dynamic_cast<T*>(component_.get())) {
+        return c;
       }
     }
 

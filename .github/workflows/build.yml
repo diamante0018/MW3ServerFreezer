@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PREMAKE_VERSION: "5.0.0-beta2"
+  PREMAKE_VERSION: "5.0.0-beta5"
 
 jobs:
   build:
@@ -27,7 +27,6 @@ jobs:
           - release
         compiler:
           - msvc
-          - clang
     steps:
       - name: Check out files
         uses: actions/checkout@main

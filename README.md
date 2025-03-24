@@ -12,7 +12,7 @@ This software has been created purely for the purposes of academic research. It 
 
 This software is a proof of concept for a vulnerability that is patched. You can't harm anyone with it if you use it on Pluto (If you were to update the addresses for the 1.9 patch of the game).
 You also can't use this vulnerability on Tekno as it was fixed in 2021 (2.0.6 version of their client).
-If you think your server is vulnerable you should seek help in the appropriate discord server or forum of the client you use.
+If you think your server is vulnerable, you should seek help from the appropriate Discord server or forum for your client.
 The exploit is documented in [exploit.cpp](src/client/component/exploit.cpp)
 
 ## Update

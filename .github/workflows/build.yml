@@ -27,6 +27,7 @@ jobs:
           - release
         compiler:
           - msvc
+          - clang
     steps:
       - name: Check out files
         uses: actions/checkout@main

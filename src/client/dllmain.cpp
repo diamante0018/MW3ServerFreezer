@@ -2,6 +2,19 @@
 #include "loader/component_loader.hpp"
 
 namespace {
+std::string get_current_date() {
+  auto now = std::chrono::system_clock::now();
+  auto current_time = std::chrono::system_clock::to_time_t(now);
+  std::tm local_time{};
+
+  (void)localtime_s(&local_time, &current_time);
+
+  std::stringstream ss;
+  ss << std::put_time(&local_time, "%Y%m%d_%H%M%S");
+
+  return ss.str();
+}
+
 LONG WINAPI exception_handler(PEXCEPTION_POINTERS exception_info) {
   if (exception_info->ExceptionRecord->ExceptionCode == 0x406D1388) {
     return EXCEPTION_CONTINUE_EXECUTION;
@@ -21,8 +34,8 @@ LONG WINAPI exception_handler(PEXCEPTION_POINTERS exception_info) {
                     | MiniDumpWithFullMemoryInfo     //
                     | MiniDumpWithThreadInfo;
 
-  const auto file_name = std::format("minidumps\\mw3-server-freezer_{}.dmp",
-                                     game::Sys_Milliseconds());
+  const auto file_name =
+      std::format("minidumps\\mw3-server-freezer_{}.dmp", get_current_date());
   const auto file_handle = CreateFileA(
       file_name.data(), GENERIC_WRITE | GENERIC_READ,
       FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS,

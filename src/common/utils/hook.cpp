@@ -103,24 +103,6 @@ void hook::quick() {
   }
 }
 
-bool hook::iat(const nt::library module, const std::string& target_module,
-               const std::string& process, void* stub) {
-  if (!module.is_valid())
-    return false;
-
-  auto ptr = module.get_iat_entry(target_module, process);
-  if (!ptr)
-    return false;
-
-  DWORD protect;
-  VirtualProtect(ptr, sizeof(*ptr), PAGE_EXECUTE_READWRITE, &protect);
-
-  *ptr = stub;
-
-  VirtualProtect(ptr, sizeof(*ptr), protect, &protect);
-  return true;
-}
-
 hook* hook::uninstall(const bool unprotect) {
   std::lock_guard _(this->state_mutex_);
 

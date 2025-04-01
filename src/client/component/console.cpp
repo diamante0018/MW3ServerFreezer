@@ -2,7 +2,6 @@
 #include "loader/component_loader.hpp"
 
 #include <utils/hook.hpp>
-#include <utils/thread.hpp>
 #include <utils/flags.hpp>
 #include <utils/concurrency.hpp>
 
@@ -37,8 +36,7 @@ public:
   void post_start() override {
     this->terminate_runner_ = false;
 
-    this->console_runner_ = utils::thread::create_named_thread(
-        "Console IO", [this] { this->runner(); });
+    this->console_runner_ = std::thread([this] { this->runner(); });
   }
 
   void post_unpack() override {
@@ -77,31 +75,30 @@ private:
   int handles_[2]{};
 
   void initialize() {
-    this->console_thread_ =
-        utils::thread::create_named_thread("Console", [this] {
-          if (!utils::flags::has_flag("noconsole")) {
-            game::Sys_ShowConsole();
+    this->console_thread_ = std::thread([this] {
+      if (!utils::flags::has_flag("noconsole")) {
+        game::Sys_ShowConsole();
+      }
+
+      messages.access(
+          [&](message_queue&) { this->console_initialized_ = true; });
+
+      MSG msg;
+      while (!this->terminate_runner_) {
+        if (PeekMessageA(&msg, nullptr, NULL, NULL, PM_REMOVE)) {
+          if (msg.message == WM_QUIT) {
+            command::execute("quit", false);
+            break;
           }
 
-          messages.access(
-              [&](message_queue&) { this->console_initialized_ = true; });
-
-          MSG msg;
-          while (!this->terminate_runner_) {
-            if (PeekMessageA(&msg, nullptr, NULL, NULL, PM_REMOVE)) {
-              if (msg.message == WM_QUIT) {
-                command::execute("quit", false);
-                break;
-              }
-
-              TranslateMessage(&msg);
-              DispatchMessageA(&msg);
-            } else {
-              this->log_messages();
-              std::this_thread::sleep_for(1ms);
-            }
-          }
-        });
+          TranslateMessage(&msg);
+          DispatchMessageA(&msg);
+        } else {
+          this->log_messages();
+          std::this_thread::sleep_for(1ms);
+        }
+      }
+    });
   }
 
   void log_messages() const {

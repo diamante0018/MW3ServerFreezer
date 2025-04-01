@@ -48,26 +48,11 @@ public:
 
   HMODULE get_handle() const;
 
-  template <typename T> T get_proc(const std::string& process) const {
-    if (!this->is_valid())
-      return T{};
-    return reinterpret_cast<T>(GetProcAddress(this->module_, process.data()));
-  }
-
-  template <typename T> std::function<T> get(const std::string& process) const {
-    if (!this->is_valid())
-      return std::function<T>();
-    return reinterpret_cast<T*>(this->get_proc<void*>(process));
-  }
-
   std::vector<PIMAGE_SECTION_HEADER> get_section_headers() const;
 
   PIMAGE_NT_HEADERS get_nt_headers() const;
   PIMAGE_DOS_HEADER get_dos_header() const;
   PIMAGE_OPTIONAL_HEADER get_optional_header() const;
-
-  void** get_iat_entry(const std::string& module_name,
-                       const std::string& proc_name) const;
 
 private:
   HMODULE module_;

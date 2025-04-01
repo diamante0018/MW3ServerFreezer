@@ -3,7 +3,6 @@
 
 #include <utils/concurrency.hpp>
 #include <utils/hook.hpp>
-#include <utils/thread.hpp>
 
 #include "scheduler.hpp"
 
@@ -135,7 +134,7 @@ unsigned int thread_id;
 class component final : public component_interface {
 public:
   void post_unpack() override {
-    thread = utils::thread::create_named_thread("Async Scheduler", [] {
+    thread = std::thread([] {
       while (!kill) {
         execute(pipeline::async);
         std::this_thread::sleep_for(10ms);

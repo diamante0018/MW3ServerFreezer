@@ -135,62 +135,6 @@ void library::free() {
 
 HMODULE library::get_handle() const { return this->module_; }
 
-void** library::get_iat_entry(const std::string& module_name,
-                              const std::string& proc_name) const {
-  if (!this->is_valid())
-    return nullptr;
-
-  const library other_module(module_name);
-  if (!other_module.is_valid())
-    return nullptr;
-
-  auto* const target_function = other_module.get_proc<void*>(proc_name);
-  if (!target_function)
-    return nullptr;
-
-  auto* header = this->get_optional_header();
-  if (!header)
-    return nullptr;
-
-  auto* import_descriptor = reinterpret_cast<PIMAGE_IMPORT_DESCRIPTOR>(
-      this->get_ptr() +
-      header->DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
-
-  while (import_descriptor->Name) {
-    if (!_stricmp(
-            reinterpret_cast<char*>(this->get_ptr() + import_descriptor->Name),
-            module_name.data())) {
-      auto* original_thunk_data = reinterpret_cast<PIMAGE_THUNK_DATA>(
-          import_descriptor->OriginalFirstThunk + this->get_ptr());
-      auto* thunk_data = reinterpret_cast<PIMAGE_THUNK_DATA>(
-          import_descriptor->FirstThunk + this->get_ptr());
-
-      while (original_thunk_data->u1.AddressOfData) {
-        const size_t ordinal_number =
-            original_thunk_data->u1.AddressOfData & 0xFFFFFFF;
-
-        if (ordinal_number > 0xFFFF)
-          continue;
-
-        if (GetProcAddress(other_module.module_,
-                           reinterpret_cast<char*>(ordinal_number)) ==
-            target_function) {
-          return reinterpret_cast<void**>(&thunk_data->u1.Function);
-        }
-
-        ++original_thunk_data;
-        ++thunk_data;
-      }
-
-      // break;
-    }
-
-    ++import_descriptor;
-  }
-
-  return nullptr;
-}
-
 std::string load_resource(const int id) {
   auto* const res = FindResource(library(), MAKEINTRESOURCE(id), RT_RCDATA);
   if (!res)

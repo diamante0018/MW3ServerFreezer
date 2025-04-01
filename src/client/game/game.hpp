@@ -18,6 +18,8 @@ private:
 // clang-format off
 extern ScreenPlacement* ScrPlace_GetUnsafeFullPlacement();
 extern void Dvar_SetVariant(dvar_t* dvar, DvarValue value, DvarSetSource source);
+
+extern XAssetEntry* DB_FindXAssetEntry(int type, const char* name);
 // clang-format on
 } // namespace game
 

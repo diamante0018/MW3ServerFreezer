@@ -24,4 +24,25 @@ void __declspec(naked) Dvar_SetVariant(dvar_t* /*dvar*/, DvarValue /*value*/,
     ret
   }
 }
+
+XAssetEntry* db_find_x_asset_entry(int type_, const char* name) {
+  static DWORD DB_FindXAssetEntry_t = 0x5c88a0;
+  XAssetEntry* result{};
+
+  __asm {
+      pushad
+      push name
+      mov edi, type_
+      call DB_FindXAssetEntry_t
+      add esp, 0x4
+      mov result, eax
+      popad
+  }
+
+  return result;
+}
+
+XAssetEntry* DB_FindXAssetEntry(int type, const char* name) {
+  return db_find_x_asset_entry(type, name);
+}
 } // namespace game

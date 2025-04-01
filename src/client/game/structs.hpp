@@ -9,6 +9,59 @@ typedef vec_t vec2_t[2];
 typedef vec_t vec3_t[3];
 typedef vec_t vec4_t[4];
 
+struct MaterialTechniqueSet {
+  const char* name;
+  unsigned char worldVertFormat;
+  unsigned char unused[2];
+  MaterialTechniqueSet* remappedTechniqueSet;
+  void* techniques[54];
+};
+
+struct __declspec(align(8)) GfxDrawSurfFields {
+  uint64_t unused : 1;
+  uint64_t primarySortKey : 6;
+  uint64_t surfType : 4;
+  uint64_t viewModelRender : 1;
+  uint64_t sceneLightIndex : 8;
+  uint64_t useHeroLighting : 1;
+  uint64_t prepass : 2;
+  uint64_t materialSortedIndex : 12;
+  uint64_t customIndex : 5;
+  uint64_t hasGfxEntIndex : 1;
+  uint64_t reflectionProbeIndex : 8;
+  uint64_t objectId : 15;
+};
+
+union GfxDrawSurf {
+  __declspec(align(8)) GfxDrawSurfFields fields;
+  __declspec(align(8)) uint64_t packed;
+};
+
+struct MaterialInfo {
+  const char* name;
+  unsigned char gameFlags;
+  unsigned char sortKey;
+  unsigned char textureAtlasRowCount;
+  unsigned char textureAtlasColumnCount;
+  GfxDrawSurf drawSurf;
+  unsigned int surfaceTypeBits;
+};
+
+struct Material {
+  MaterialInfo info;
+  char stateBitsEntry[54];
+  unsigned char textureCount;
+  unsigned char constantCount;
+  unsigned char stateBitsCount;
+  unsigned char stateFlags;
+  unsigned char cameraRegion;
+  MaterialTechniqueSet* techniqueSet;
+  void* textureTable;
+  void* constantTable;
+  void* stateBitsTable;
+  const char** subMaterials;
+};
+
 enum bdLogMessageType {
   BD_LOG_INFO,
   BD_LOG_WARNING,
@@ -261,6 +314,8 @@ struct usercmd_s {
   int remoteControlMove;
 };
 
+static_assert(offsetof(usercmd_s, buttons) == 0x4);
+
 enum LocSelInputState {
   LOC_SEL_INPUT_NONE = 0,
   LOC_SEL_INPUT_CONFIRM = 1,
@@ -367,6 +422,21 @@ struct Font_s {
 
 union XAssetHeader {
   Font_s* font;
+  Material* material;
+};
+
+struct XAsset {
+  int type;
+  XAssetHeader header;
+};
+
+struct XAssetEntry {
+  XAsset asset;
+  char zoneIndex;
+  volatile char inuseMask;
+  bool printedMissingAsset;
+  unsigned __int16 nextHash;
+  unsigned __int16 nextOverride;
 };
 
 } // namespace game

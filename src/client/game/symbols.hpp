@@ -80,6 +80,9 @@ WEAK symbol<int(unsigned __int64, const void*, unsigned int)>
 WEAK symbol<XAssetHeader(int type, const char* name, int allowCreateDefault)>
     DB_FindXAssetHeader{0x4B25C0};
 
+WEAK symbol<int(char* dest, int size, const char* fmt, ...)> Com_sprintf{
+    0x450CF0};
+
 // Variables
 WEAK symbol<CmdArgs> cmd_args{0x1C96850};
 WEAK symbol<PlayerKeyState> playerKeys{0xB3A38C};

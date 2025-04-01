@@ -60,7 +60,7 @@ filter {}
 filter "configurations:release"
 	optimize "Size"
 	defines {"NDEBUG"}
-	flags {"FatalCompileWarnings"}
+	fatalwarnings {"All"}
 
 	filter "toolset:msc*"
 		buildoptions "/GL"

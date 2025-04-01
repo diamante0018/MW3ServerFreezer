@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PREMAKE_VERSION: "5.0.0-beta5"
+  PREMAKE_VERSION: "5.0.0-beta6"
 
 jobs:
   build:

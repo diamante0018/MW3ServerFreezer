@@ -51,7 +51,7 @@ editandcontinue "Off"
 warnings "Extra"
 characterset "ASCII"
 
-flags {"NoIncrementalLink", "NoMinimalRebuild", "MultiProcessorCompile", "No64BitChecks"}
+multiprocessorcompile "On"
 
 filter "platforms:Win*"
 	defines {"_WINDOWS", "WIN32"}
